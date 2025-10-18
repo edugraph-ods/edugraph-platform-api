@@ -10,7 +10,7 @@ from app.adapters.db.session import get_db
 
 bearer_scheme = HTTPBearer(description="Enter the JWT token using the format: Bearer <token>")
 
-router = APIRouter(prefix="/auth", tags=["authentication"])
+router = APIRouter(prefix="/api/v1", tags=["authentication"])
 
 """
 get_auth_service is a function that returns an AuthService instance.

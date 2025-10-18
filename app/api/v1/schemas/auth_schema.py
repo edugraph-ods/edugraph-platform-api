@@ -5,6 +5,19 @@ class SignUpRequest(BaseModel):
     password: str
     full_name: str = None
 
+    @validator("email")
+    def validate_email_domain(cls, value: EmailStr) -> EmailStr:
+        allowed_domains = {
+            "upc.edu.pe",
+            "upn.edu.pe",
+            "utp.edu.pe",
+            "unmsm.edu.pe",
+        }
+        domain = value.split("@")[-1]
+        if domain not in allowed_domains:
+            raise ValueError("email domain is not allowed")
+        return value
+
     @validator("password")
     def validate_password_length(cls, value: str) -> str:
         if len(value) < 8:
