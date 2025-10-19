@@ -35,7 +35,15 @@ DOMAIN_UNIVERSITY_MAP = {
     "unmsm.edu.pe": "Universidad Nacional Mayor de San Marcos",
 }
 
+"""
+_normalize_text is a function that normalizes a text.
 
+Args:
+    value (Optional[str]): The text to normalize.
+
+Returns:
+    str: The normalized text.
+"""
 def _normalize_text(value: Optional[str]) -> str:
     if not value:
         return ""
@@ -43,7 +51,16 @@ def _normalize_text(value: Optional[str]) -> str:
     norm = "".join(ch for ch in norm if not unicodedata.combining(ch))
     return " ".join(norm.lower().strip().split())
 
+"""
+_get_domain_filters is a function that gets the domain filters.
 
+Args:
+    user (User): The user.
+    req (IngestRequest): The ingest request.
+
+Returns:
+    dict: The domain filters.
+"""
 def _get_domain_filters(user: User, req: IngestRequest):
     email = user.email or ""
     domain = email.split("@")[-1]
@@ -56,7 +73,16 @@ def _get_domain_filters(user: User, req: IngestRequest):
         filters["university"] = DOMAIN_UNIVERSITY_MAP[domain]
     return filters
 
+"""
+_filter_courses_for_domain is a function that filters the courses for the domain.
 
+Args:
+    user (User): The user.
+    courses (List): The courses.
+
+Returns:
+    List: The filtered courses.
+"""
 def _filter_courses_for_domain(user: User, courses: List):
     email = user.email or ""
     domain = email.split("@")[-1]
@@ -69,7 +95,16 @@ def _filter_courses_for_domain(user: User, courses: List):
         return filtered
     return courses
 
+"""
+_ingest is a function that ingests the courses.
 
+Args:
+    req (IngestRequest): The ingest request.
+    current_user (User): The current user.
+
+Returns:
+    List[CourseOut]: The ingested courses.
+"""
 @router.post("/ingest", response_model=List[CourseOut])
 def ingest(req: IngestRequest, current_user: User = Depends(get_current_active_user)):
     source = req.source_path or "app/adapters/data/Malla-Curricular-Dataset.csv"
@@ -100,6 +135,15 @@ def ingest(req: IngestRequest, current_user: User = Depends(get_current_active_u
     ]
 
 
+"""
+_list_courses is a function that lists the courses.
+
+Args:
+    current_user (User): The current user.
+
+Returns:
+    List[CourseOut]: The courses.
+"""
 @router.get("/courses", response_model=List[CourseOut])
 def list_courses(current_user: User = Depends(get_current_active_user)):
     courses = _filter_courses_for_domain(current_user, repo.get_courses())
@@ -118,6 +162,15 @@ def list_courses(current_user: User = Depends(get_current_active_user)):
     ]
 
 
+"""
+_detect_cycles is a function that detects cycles.
+
+Args:
+    current_user (User): The current user.
+
+Returns:
+    DetectCyclesResponse: The cycles.
+"""
 @router.get("/detect-cycles", response_model=DetectCyclesResponse)
 def detect_cycles(current_user: User = Depends(get_current_active_user)):
     use_case = DetectCyclesUseCase(repository=repo, algorithm=algo)
@@ -126,6 +179,16 @@ def detect_cycles(current_user: User = Depends(get_current_active_user)):
     return DetectCyclesResponse(has_cycles=has_cycles, cycles=cycles)
 
 
+"""
+_plan_route is a function that plans a route.
+
+Args:
+    req (PlanRequest): The plan request.
+    current_user (User): The current user.
+
+Returns:
+    PlanResponse: The plan response.
+"""
 @router.post("/plan", response_model=PlanResponse)
 def plan_route(req: PlanRequest, current_user: User = Depends(get_current_active_user)):
     approved = set(req.approved or [])
