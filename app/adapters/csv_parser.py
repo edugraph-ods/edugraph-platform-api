@@ -6,7 +6,21 @@ from typing import Iterable, List, Optional, Tuple
 from app.core.entities.course import Course
 from app.core.ports.parser import Parser
 
+"""
+CsvParser is a class that implements the Parser interface.
 
+Attributes:
+    HEADER_MAPS: A dictionary that maps the header names to the actual column names.
+    SEP_CANDIDATES: A list of possible separators for the CSV file.
+
+Methods:
+    _normalize_headers(headers: List[str]) -> dict: Normalizes the headers.
+    _parse_prereq(value: str) -> List[str]: Parses the prerequisites.
+    _coerce_int(value: str, default: int = 0) -> int: Coerces the value to an integer.
+    _open_with_fallback(path: Path) -> Tuple[object, str]: Opens the file with fallback.
+    _normalize_text(value: Optional[str]) -> str: Normalizes the text.
+    load_courses(source_path: str, university: Optional[str] = None, career: Optional[str] = None, program: Optional[str] = None) -> Iterable[Course]: Loads the courses.
+"""
 class CsvParser(Parser):
     HEADER_MAPS = {
         "university": {"universidad", "university"},
@@ -26,7 +40,15 @@ class CsvParser(Parser):
     }
 
     SEP_CANDIDATES = [";", ",", "|", "/", "+", "-", " "]
+    """
+    _normalize_headers is a function that normalizes the headers.
 
+    Args:
+        headers (List[str]): The headers.
+
+    Returns:
+        dict: The normalized headers.
+    """
     def _normalize_headers(self, headers: List[str]) -> dict:
         norm = {h.strip().lower(): i for i, h in enumerate(headers)}
         col_idx = {}
@@ -37,6 +59,15 @@ class CsvParser(Parser):
                     break
         return col_idx
 
+    """
+    _parse_prereq is a function that parses the prerequisites.
+
+    Args:
+        value (str): The value.
+
+    Returns:
+        List[str]: The parsed prerequisites.
+    """
     def _parse_prereq(self, value: str) -> List[str]:
         if not value:
             return []
@@ -47,6 +78,16 @@ class CsvParser(Parser):
                 return [p for p in parts if p]
         return [raw] if raw else []
 
+    """
+    _coerce_int is a function that coerces the value to an integer.
+
+    Args:
+        value (str): The value.
+        default (int): The default value.
+
+    Returns:
+        int: The coerced value.
+    """
     def _coerce_int(self, value: str, default: int = 0) -> int:
         try:
             return int(str(value).strip())
@@ -56,6 +97,15 @@ class CsvParser(Parser):
             except Exception:
                 return default
 
+    """
+    _open_with_fallback is a function that opens a file with fallback.
+
+    Args:
+        path (Path): The path to the file.
+
+    Returns:
+        Tuple[object, str]: The file and sample.
+    """
     def _open_with_fallback(self, path: Path) -> Tuple[object, str]:
         encodings = ["utf-8", "utf-8-sig", "latin-1", "cp1252"]
         last_err = None
@@ -73,6 +123,15 @@ class CsvParser(Parser):
                 last_err = e
         raise last_err
 
+    """
+    _normalize_text is a function that normalizes the text.
+
+    Args:
+        value (Optional[str]): The value.
+
+    Returns:
+        str: The normalized text.
+    """
     def _normalize_text(self, value: Optional[str]) -> str:
         if not value:
             return ""
@@ -80,6 +139,18 @@ class CsvParser(Parser):
         value = "".join(ch for ch in value if not unicodedata.combining(ch))
         return " ".join(value.lower().strip().split())
 
+    """
+    load_courses is a function that loads the courses.
+
+    Args:
+        source_path (str): The path to the source file.
+        university (Optional[str]): The university.
+        career (Optional[str]): The career.
+        program (Optional[str]): The program.
+
+    Returns:
+        Iterable[Course]: The courses.
+    """
     def load_courses(
         self,
         source_path: str,

@@ -5,11 +5,44 @@ from typing import Dict, List, Optional, Set, Tuple
 from app.core.entities.course import Course
 from app.core.ports.algorithm_service import AlgorithmService
 
+"""
+AlgorithmServiceImpl is a class that implements the AlgorithmService interface.
 
+Methods:
+    _course_map(self, courses: List[Course]) -> Dict[str, Course]:
+        Maps courses to their codes.
+    _edges(self, courses: List[Course]) -> Dict[str, List[str]]:
+        Creates a graph of courses.
+    detect_cycles(self, courses: List[Course]) -> Tuple[bool, List[List[str]]]:
+        Detects cycles in the given list of courses.
+    topological_sort(self, courses: List[Course]) -> List[str]:
+        Sorts the given list of courses topologically.
+    plan_min_cycles(self, courses: List[Course], max_credits: int, approved: Optional[Set[str]] = None, target_codes: Optional[Set[str]] = None, failures: Optional[Dict[int, Set[str]]] = None, max_exact_courses: int = 18) -> Dict:
+        Plans the minimum number of cycles for the given list of courses.
+"""
 class AlgorithmServiceImpl(AlgorithmService):
+    
+    """
+    _course_map is a method that maps courses to their codes.
+
+    Args:
+        courses (List[Course]): The list of courses.
+
+    Returns:
+        Dict[str, Course]: The course map.
+    """
     def _course_map(self, courses: List[Course]) -> Dict[str, Course]:
         return {c.code: c for c in courses}
 
+    """
+    _edges is a method that creates a graph of courses.
+
+    Args:
+        courses (List[Course]): The list of courses.
+
+    Returns:
+        Dict[str, List[str]]: The graph of courses.
+    """
     def _edges(self, courses: List[Course]) -> Dict[str, List[str]]:
         m = self._course_map(courses)
         g: Dict[str, List[str]] = defaultdict(list)
@@ -19,6 +52,15 @@ class AlgorithmServiceImpl(AlgorithmService):
                     g[p].append(c.code)
         return g
 
+    """
+    detect_cycles is a method that detects cycles in the given list of courses.
+
+    Args:
+        courses (List[Course]): The list of courses.
+
+    Returns:
+        Tuple[bool, List[List[str]]]: The cycles of the courses.
+    """
     def detect_cycles(self, courses: List[Course]) -> Tuple[bool, List[List[str]]]:
         m = self._course_map(courses)
         g = self._edges(courses)
@@ -46,6 +88,15 @@ class AlgorithmServiceImpl(AlgorithmService):
                 dfs(code)
         return (len(cycles) > 0, cycles)
 
+    """
+    topological_sort is a method that sorts the given list of courses topologically.
+
+    Args:
+        courses (List[Course]): The list of courses.
+
+    Returns:
+        List[str]: The topological order of the courses.
+    """
     def topological_sort(self, courses: List[Course]) -> List[str]:
         m = self._course_map(courses)
         indeg: Dict[str, int] = {c.code: 0 for c in courses}
@@ -68,6 +119,20 @@ class AlgorithmServiceImpl(AlgorithmService):
             return order
         return order
 
+    """
+    plan_min_cycles is a method that plans the minimum number of cycles for the given list of courses.
+
+    Args:
+        courses (List[Course]): The list of courses.
+        max_credits (int): The maximum number of credits.
+        approved (Optional[Set[str]], optional): The set of approved courses. Defaults to None.
+        target_codes (Optional[Set[str]], optional): The set of target courses. Defaults to None.
+        failures (Optional[Dict[int, Set[str]]], optional): The set of failures. Defaults to None.
+        max_exact_courses (int, optional): The maximum number of exact courses. Defaults to 18.
+
+    Returns:
+        Dict: The plan of the minimum number of cycles.
+    """
     def plan_min_cycles(
         self,
         courses: List[Course],

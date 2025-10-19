@@ -3,7 +3,15 @@ from typing import Dict, List, Tuple
 
 from app.core.entities.course import Course
 
+"""
+build_adjacency is a function that builds an adjacency list from a list of courses.
 
+Args:
+    courses (List[Course]): The list of courses.
+
+Returns:
+    Tuple[Dict[str, List[str]], Dict[str, int]]: The adjacency list and the indegree of each course.
+"""
 def build_adjacency(courses: List[Course]) -> Tuple[Dict[str, List[str]], Dict[str, int]]:
     indegree: Dict[str, int] = {c.code: 0 for c in courses}
     adjacency: Dict[str, List[str]] = defaultdict(list)
@@ -17,7 +25,15 @@ def build_adjacency(courses: List[Course]) -> Tuple[Dict[str, List[str]], Dict[s
 
     return adjacency, indegree
 
+"""
+topological_order is a function that returns a topological order of the courses.
 
+Args:
+    courses (List[Course]): The list of courses.
+
+Returns:
+    List[str]: The topological order of the courses.
+"""
 def topological_order(courses: List[Course]) -> List[str]:
     adjacency, indegree = build_adjacency(courses)
     queue = deque([code for code, deg in indegree.items() if deg == 0])
@@ -33,7 +49,15 @@ def topological_order(courses: List[Course]) -> List[str]:
 
     return order
 
+"""
+find_cycles is a function that returns a list of cycles in the graph.
 
+Args:
+    courses (List[Course]): The list of courses.
+
+Returns:
+    Tuple[bool, List[List[str]]]: A tuple containing a boolean indicating if there are cycles and a list of cycles.
+"""
 def find_cycles(courses: List[Course]) -> Tuple[bool, List[List[str]]]:
     adjacency, _ = build_adjacency(courses)
     visited: Dict[str, int] = {c.code: 0 for c in courses}

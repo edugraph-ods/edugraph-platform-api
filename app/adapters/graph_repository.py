@@ -3,7 +3,17 @@ from threading import RLock
 from app.core.entities.course import Course
 from app.core.ports.graph_repository import GraphRepository
 
+"""
+InMemoryGraphRepository is a class that implements the GraphRepository interface.
 
+Attributes:
+    _courses: A list of courses.
+    _lock: A lock for thread safety.
+
+Methods:
+    set_courses(courses: Iterable[Course]) -> None: Sets the courses.
+    get_courses() -> List[Course]: Gets the courses.
+"""
 class InMemoryGraphRepository(GraphRepository):
     def __init__(self):
         self._courses: List[Course] = []
