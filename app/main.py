@@ -4,6 +4,7 @@ from fastapi import FastAPI
 
 from app.api.v1.routers.auth_router import router as auth_router
 from app.api.v1.routers.protected_router import router as protected_router
+from app.api.v1.routers.ingest_router import router as ingest_router
 from app.adapters.db.models import Base
 from app.adapters.db.session import create_database_if_not_exists, engine
 
@@ -18,14 +19,5 @@ async def on_startup():
 
 
 app.include_router(auth_router)
-app.include_router(protected_router)
+app.include_router(ingest_router)
 
-
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
