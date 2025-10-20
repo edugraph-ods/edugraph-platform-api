@@ -27,7 +27,7 @@ class CsvParser(Parser):
         "career": {"carrera", "career", "major"},
         "program": {"programa", "program", "track"},
         "cycle": {"ciclo", "cycle", "semestre", "semester"},
-        "name": {"nombre", "curso", "name", "course"},
+        "name": {"nombre", "curso", "name", "course", "nombre del curso"},
         "code": {"codigo", "código", "code", "id"},
         "credits": {"creditos", "créditos", "credits", "credit"},
         "prerequisites": {
