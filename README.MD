@@ -30,8 +30,8 @@ EduGraph Platform API es el núcleo del ecosistema EduGraph, diseñado para ofre
 
 2. Crea un entorno virtual y actívalo:
    ```bash
-   python -m venv venv
-   source venv/bin/activate  
+    py -m venv .venv
+    .\.venv\Scripts\Activate
    ```
 
 3. Configura las variables de entorno:
@@ -105,13 +105,13 @@ EduGraph Platform API es el núcleo del ecosistema EduGraph, diseñado para ofre
 
 1. Asegúrate de tener PostgreSQL y Redis en ejecución
 2. Configura las variables de entorno en `.env`
-3. Ejecuta las migraciones:
+3. Instala las dependencias:
    ```bash
-   alembic upgrade head
+   python -m pip install fastapi uvicorn sqlalchemy asyncmy passlib[bcrypt] python-jose[cryptography] pydantic-settings
    ```
 4. Inicia el servidor de desarrollo:
    ```bash
-   uvicorn app.main:app --reload
+   python -m uvicorn app.main:app --reload
    ```
 5. Accede a la documentación interactiva en:
    - Swagger UI: http://localhost:8000/docs
