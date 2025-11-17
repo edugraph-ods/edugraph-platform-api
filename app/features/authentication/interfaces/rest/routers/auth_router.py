@@ -1,0 +1,100 @@
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+
+from app.features.authentication.application.internal.outbound_services.hashing_service.hashing_service import \
+    HashingService
+from app.features.authentication.application.internal.outbound_services.token_service.token_service import TokenService
+from app.features.authentication.domain.repositories.auth_repository import UserRepository
+from app.features.authentication.interfaces.rest.schemas.auth_response import AuthResponse
+from app.features.authentication.interfaces.rest.schemas.sign_up_request import SignUpRequest
+from app.features.authentication.interfaces.rest.schemas.sign_in_request import SignInRequest
+from app.features.authentication.application.internal.inbound_services.uses_cases.sign_up import SignUpUseCase
+from app.features.authentication.application.internal.inbound_services.uses_cases.sign_in import SignInUseCase
+from app.features.authentication.infrastructure.hashing.bcrypt.services.hashing_service import HashingServiceImpl
+from app.features.authentication.infrastructure.tokens.jwt.services.token_service import TokenServiceImpl
+from app.features.authentication.infrastructure.persistence.sql_alchemist.repositories.user_repository_impl import UserRepositoryImpl
+from app.shared.infrastructure.persistence.sql_alchemist.session import get_db
+
+bearer_scheme = HTTPBearer(description="Enter the JWT token using the format: Bearer <token>")
+
+router = APIRouter(prefix="/api/v1", tags=["authentication"])
+
+
+def get_auth_service() -> HashingService:
+    return HashingServiceImpl()
+
+def get_jwt_service() -> TokenService:
+    return TokenServiceImpl(secret_key="your-secret-key-change-in-production")
+
+def get_user_repository(db=Depends(get_db)) -> UserRepository:
+    return UserRepositoryImpl(db)
+
+@router.post("/sign-up", response_model=AuthResponse, status_code=status.HTTP_201_CREATED)
+async def sign_up(
+    request: SignUpRequest,
+    user_repository: UserRepository = Depends(get_user_repository),
+    hash_service: HashingService = Depends(get_auth_service),
+    token_service: TokenService = Depends(get_jwt_service)
+):
+    try:
+        use_case = SignUpUseCase(user_repository, hash_service, token_service)
+        result = await use_case.execute(
+            email=request.email,
+            password=request.password,
+            full_name=request.full_name
+        )
+        return AuthResponse(**result)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+
+
+@router.post("/sign-in", response_model=AuthResponse)
+async def sign_in(
+    request: SignInRequest,
+    user_repository: UserRepository = Depends(get_user_repository),
+    hash_service: HashingService = Depends(get_auth_service),
+    token_service: TokenService = Depends(get_jwt_service)
+):
+    try:
+        use_case = SignInUseCase(user_repository, hash_service, token_service)
+        result = await use_case.execute(
+            email=request.email,
+            password=request.password
+        )
+        return AuthResponse(**result)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=str(e),
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+
+# TO-DO: CHANGE THIS METHOD TO A MIDDLEWARE THAT VALIDATES THE TOKEN
+async def get_current_user(
+    credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
+    auth_service: TokenService = Depends(get_auth_service),
+    user_repository: UserRepository = Depends(get_user_repository)
+):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    
+    payload = auth_service.verify_token(credentials.credentials)
+    if not payload:
+        raise credentials_exception
+    
+    email: str = payload.get("sub")
+    if email is None:
+        raise credentials_exception
+    
+    user = await user_repository.get_user_by_email(email)
+    if user is None:
+        raise credentials_exception
+    
+    return user
