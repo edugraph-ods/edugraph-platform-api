@@ -1,5 +1,8 @@
+from app.features.authentication.application.internal.outbound_services.hashing_service.hashing_service import \
+    HashingService
+from app.features.authentication.application.internal.outbound_services.token_service.token_service import TokenService
 from app.features.authentication.domain.models.user import User
-from app.features.authentication.domain.repositories.auth_service import AuthService, UserRepository
+from app.features.authentication.domain.repositories.auth_repository import AuthService, UserRepository
 
 """
 SignUpUseCase is an abstract base class that defines the interface for sign-up use cases.
@@ -8,9 +11,10 @@ Returns:
     SignUpUseCase: The SignUpUseCase instance.
 """
 class SignUpUseCase:
-    def __init__(self, user_repository: UserRepository, auth_service: AuthService):
+    def __init__(self, user_repository: UserRepository, hash_service: HashingService, token_service: TokenService):
         self.user_repository = user_repository
-        self.auth_service = auth_service
+        self.hash_service = hash_service
+        self.token_service = token_service
     """
     execute is an abstract method that executes the use case.
 
@@ -27,11 +31,11 @@ class SignUpUseCase:
             raise ValueError("User already exists with this email")
 
         user = User.create(email=email, full_name=full_name)
-        user.hashed_password = self.auth_service.get_password_hash(password)
+        user.hashed_password = self.hash_service.get_password_hash(password)
 
         created_user = await self.user_repository.create_user(user)
 
-        access_token = self.auth_service.create_access_token(
+        access_token = self.token_service.create_access_token(
             data={"sub": created_user.email, "user_id": str(created_user.id)}
         )
 

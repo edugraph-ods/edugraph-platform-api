@@ -1,46 +1,16 @@
-from datetime import datetime, timedelta
+﻿from datetime import datetime, timedelta
 from jose import JWTError, jwt
-from passlib.context import CryptContext
-from app.features.authentication.domain.repositories.auth_service import AuthService
+from app.features.authentication.application.internal.outbound_services.token_service.token_service import TokenService
 
 """
-AuthServiceImpl is an implementation of the AuthService interface.
-
-Returns:
-    AuthServiceImpl: The AuthServiceImpl instance.
+TokenServiceImpl is an implementation of the TokenService interface.
 """
-class AuthServiceImpl(AuthService):
+class TokenServiceImpl(TokenService):
     def __init__(self, secret_key: str, algorithm: str = "HS256", access_token_expire_minutes: int = 30):
         self.secret_key = secret_key
         self.algorithm = algorithm
         self.access_token_expire_minutes = access_token_expire_minutes
-        self.pwd_context = CryptContext(
-            schemes=["pbkdf2_sha256"],
-            deprecated="auto",
-        )
-    """
-    verify_password is an abstract method that verifies the password.
 
-    Args:
-        plain_password (str): The plain password.
-        hashed_password (str): The hashed password.
-
-    Returns:
-        bool: True if the password is correct, False otherwise.
-    """
-    def verify_password(self, plain_password: str, hashed_password: str) -> bool:
-        return self.pwd_context.verify(plain_password, hashed_password)
-    """
-    get_password_hash is an abstract method that gets the password hash.
-
-    Args:
-        password (str): The password.
-
-    Returns:
-        str: The password hash.
-    """
-    def get_password_hash(self, password: str) -> str:
-        return self.pwd_context.hash(password)
     """
     create_access_token is an abstract method that creates an access token.
 
@@ -56,6 +26,7 @@ class AuthServiceImpl(AuthService):
         to_encode.update({"exp": expire})
         encoded_jwt = jwt.encode(to_encode, self.secret_key, algorithm=self.algorithm)
         return encoded_jwt
+
     """
     verify_token is an abstract method that verifies the token.
 

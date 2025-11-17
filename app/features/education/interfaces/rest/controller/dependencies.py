@@ -1,5 +1,5 @@
 from fastapi import Depends
-from app.features.authentication.interfaces.rest.controllers.auth_router import get_current_user
+from app.features.authentication.interfaces.rest.routers.auth_router import get_current_user
 from fastapi import HTTPException
 
 """

@@ -12,7 +12,7 @@ from app.features.education.interfaces.rest.dtos.route_schema import (
     PlanRequest,
     PlanResponse,
 )
-from app.features.authentication.interfaces.rest.dtos.dependencies import get_current_active_user
+from app.features.education.interfaces.rest.controller.dependencies import get_current_active_user
 from app.features.authentication.domain.models.user import User
 from app.features.education.application.internal.inbound_services.use_cases.detect_cycles import DetectCyclesUseCase
 from app.features.education.application.internal.inbound_services.use_cases.ingest_graph import IngestGraphUseCase

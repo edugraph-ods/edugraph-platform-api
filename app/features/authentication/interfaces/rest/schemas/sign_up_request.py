@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, validator
+﻿from pydantic import BaseModel, EmailStr, validator
 
 """
 SignUpRequest is a class that represents a sign up request.
@@ -31,40 +31,3 @@ class SignUpRequest(BaseModel):
         if len(value) < 8:
             raise ValueError("password must be at least 8 characters long")
         return value
-
-"""
-SignInRequest is a class that represents a sign in request.
-
-Attributes:
-    email (EmailStr): The email of the user.
-    password (str): The password of the user.
-"""
-class SignInRequest(BaseModel):
-    email: EmailStr
-    password: str
-
-"""
-AuthResponse is a class that represents an authentication response.
-
-Attributes:
-    access_token (str): The access token.
-    token_type (str): The token type.
-    user_id (int): The user id.
-    email (str): The email of the user.
-"""
-class AuthResponse(BaseModel):
-    access_token: str
-    token_type: str
-    user_id: int
-    email: str
-
-"""
-TokenData is a class that represents a token data.
-
-Attributes:
-    user_id (int): The user id.
-    email (str): The email of the user.
-"""
-class TokenData(BaseModel):
-    user_id: int = None
-    email: str = None

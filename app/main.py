@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
-from app.features.authentication.infrastructure.persistence.models.models import Base
+from app.features.authentication.infrastructure.persistence.sql_alchemist.models.user_model import Base
 from app.shared.infrastructure.persistence.sql_alchemist.session import create_database_if_not_exists, engine
 
-from app.features.authentication.interfaces.rest.controllers.auth_router import router as auth_router
+from app.features.authentication.interfaces.rest.routers.auth_router import router as auth_router
 from app.features.education.interfaces.rest.controller.ingest_router import router as ingest_router
 
 

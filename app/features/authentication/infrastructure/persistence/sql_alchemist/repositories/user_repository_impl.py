@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from app.features.authentication.domain.models.user import User
-from app.features.authentication.domain.repositories.auth_service import UserRepository
-from app.features.authentication.infrastructure.persistence.models.models import UserModel
+from app.features.authentication.domain.repositories.auth_repository import UserRepository
+from app.features.authentication.infrastructure.persistence.sql_alchemist.models.user_model import UserModel
 
 """
 UserRepositorySQL is a class that implements the UserRepository interface.
@@ -10,7 +10,7 @@ It provides methods for interacting with a database to perform user-related oper
 Attributes:
     db: The database session used to execute queries.
 """
-class UserRepositorySQL(UserRepository):
+class UserRepositoryImpl(UserRepository):
     def __init__(self, db_session):
         self.db = db_session
 
