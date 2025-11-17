@@ -1,16 +1,18 @@
 from pydantic import BaseModel
+from pydantic import EmailStr
 
 """
-AuthResponse is a class that represents an authentication response.
-
-Attributes:
-    access_token (str): The access token.
-    token_type (str): The token type.
-    user_id (int): The user id.
-    email (str): The email of the user.
+AuthResponse represents the payload returned after a successful sign-in.
 """
 class AuthResponse(BaseModel):
-    access_token: str
-    token_type: str
-    user_id: int
-    email: str
+    token: str
+    userId: str
+    email: EmailStr
+    username: str
+    accountId: str
+
+
+class ProfileResponse(BaseModel):
+    id: str
+    username: str
+    email: EmailStr

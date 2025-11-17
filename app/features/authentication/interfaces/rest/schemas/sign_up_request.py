@@ -6,12 +6,12 @@ SignUpRequest is a class that represents a sign up request.
 Attributes:
     email (EmailStr): The email of the user.
     password (str): The password of the user.
-    full_name (str): The full name of the user.
+    username (str | None): Optional username override.
 """
 class SignUpRequest(BaseModel):
     email: EmailStr
     password: str
-    full_name: str = None
+    username: str | None = None
 
     @validator("email")
     def validate_email_domain(cls, value: EmailStr) -> EmailStr:
@@ -20,6 +20,7 @@ class SignUpRequest(BaseModel):
             "upn.edu.pe",
             "utp.edu.pe",
             "unmsm.edu.pe",
+            "gmail.com"
         }
         domain = value.split("@")[-1]
         if domain not in allowed_domains:

@@ -48,7 +48,7 @@ EduGraph Platform API es el núcleo del ecosistema EduGraph, diseñado para ofre
   ```
 - **Pydantic**: Validación de datos y configuración mediante anotaciones de tipos
   ```bash
-  pip install pydantic
+  pip install "pydantic[email]"
   ```
 - **Starlette**: Framework ASGI ligero (incluido con FastAPI)
   ```bash
@@ -107,7 +107,7 @@ EduGraph Platform API es el núcleo del ecosistema EduGraph, diseñado para ofre
 2. Configura las variables de entorno en `.env`
 3. Instala las dependencias:
    ```bash
-   python -m pip install fastapi uvicorn sqlalchemy asyncmy passlib[bcrypt] python-jose[cryptography] pydantic-settings
+   python -m pip install fastapi uvicorn sqlalchemy asyncmy passlib[bcrypt] python-jose[cryptography] pydantic-settings email-validator
    ```
 4. Inicia el servidor de desarrollo:
    ```bash

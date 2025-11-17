@@ -32,7 +32,7 @@ class SignInUseCase:
         if not user or not user.is_active:
             raise ValueError("Invalid credentials")
 
-        if not self.hashing_service.verify_password(password, user.hashed_password):
+        if not user.password or not self.hashing_service.verify_password(password, user.password):
             raise ValueError("Invalid credentials")
 
         access_token = self.token_service.create_access_token(
@@ -40,8 +40,9 @@ class SignInUseCase:
         )
 
         return {
-            "access_token": access_token,
-            "token_type": "bearer",
-            "user_id": user.id,
-            "email": user.email
+            "token": access_token,
+            "userId": str(user.id),
+            "email": user.email,
+            "username": user.username,
+            "accountId": str(user.account_id),
         }

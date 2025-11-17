@@ -1,7 +1,8 @@
-from sqlalchemy import select
+from sqlalchemy import select, update
 from app.features.authentication.domain.models.user import User
 from app.features.authentication.domain.repositories.auth_repository import UserRepository
 from app.features.authentication.infrastructure.persistence.sql_alchemist.models.user_model import UserModel
+from datetime import datetime
 
 """
 UserRepositorySQL is a class that implements the UserRepository interface.
@@ -23,22 +24,27 @@ class UserRepositoryImpl(UserRepository):
     Returns:
         User | None: The user found or None if not found.
     """
+    def _to_domain(self, user_model: UserModel | None) -> User | None:
+        if user_model is None:
+            return None
+        return User(
+            email=user_model.email,
+            username=user_model.username,
+            id=user_model.id,
+            password=user_model.password,
+            is_active=user_model.is_active,
+            created_at=user_model.created_at,
+            updated_at=user_model.updated_at,
+            account_id=user_model.account_id,
+            recovery_code=user_model.recovery_code,
+            recovery_code_expiration=user_model.recovery_code_expiration,
+        )
+
     async def get_user_by_email(self, email: str) -> User | None:
         result = await self.db.execute(
             select(UserModel).where(UserModel.email == email)
         )
-        user_model = result.scalar_one_or_none()
-        if user_model:
-            return User(
-                id=user_model.id,
-                email=user_model.email,
-                hashed_password=user_model.hashed_password,
-                full_name=user_model.full_name,
-                is_active=user_model.is_active,
-                created_at=user_model.created_at,
-                updated_at=user_model.updated_at
-            )
-        return None
+        return self._to_domain(result.scalar_one_or_none())
 
     """
     Creates a new user.
@@ -51,18 +57,26 @@ class UserRepositoryImpl(UserRepository):
     """
     async def create_user(self, user: User) -> User:
         user_model = UserModel(
+            id=user.id,
             email=user.email,
-            hashed_password=user.hashed_password,
-            full_name=user.full_name,
+            username=user.username,
+            password=user.password,
+            account_id=user.account_id,
+            recovery_code=user.recovery_code,
+            recovery_code_expiration=user.recovery_code_expiration,
             is_active=user.is_active,
             created_at=user.created_at,
-            updated_at=user.updated_at
+            updated_at=user.updated_at,
         )
+
         self.db.add(user_model)
         await self.db.commit()
         await self.db.refresh(user_model)
         
         user.id = user_model.id
+        user.account_id = user_model.account_id
+        user.created_at = user_model.created_at
+        user.updated_at = user_model.updated_at
         return user
 
     """
@@ -79,3 +93,20 @@ class UserRepositoryImpl(UserRepository):
             select(UserModel.id).where(UserModel.email == email)
         )
         return result.scalar_one_or_none() is not None
+
+    async def get_user_by_id(self, user_id: str) -> User | None:
+        result = await self.db.execute(
+            select(UserModel).where(UserModel.id == user_id)
+        )
+        return self._to_domain(result.scalar_one_or_none())
+
+    async def update_password(self, user_id: str, hashed_password: str) -> None:
+        await self.db.execute(
+            update(UserModel)
+            .where(UserModel.id == user_id)
+            .values(
+                password=hashed_password,
+                updated_at=datetime.utcnow(),
+            )
+        )
+        await self.db.commit()

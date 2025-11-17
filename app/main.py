@@ -6,6 +6,7 @@ from app.shared.infrastructure.persistence.sql_alchemist.session import create_d
 
 from app.features.authentication.interfaces.rest.routers.auth_router import router as auth_router
 from app.features.education.interfaces.rest.controller.ingest_router import router as ingest_router
+from app.features.authentication.interfaces.rest.routers.users_router import router as users_router
 
 
 @asynccontextmanager
@@ -17,8 +18,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="QuickStore API",
-    description="The RESTAPI application documentation for QuickStore",
+    title="EduGraph API",
+    description="The RESTAPI application documentation for EduGraph",
     version="1.0.0",
     docs_url="/docs",
     openapi_url="/openapi.json",
@@ -26,6 +27,7 @@ app = FastAPI(
 )
 
 app.include_router(auth_router)
+app.include_router(users_router)
 app.include_router(ingest_router)
 
 
