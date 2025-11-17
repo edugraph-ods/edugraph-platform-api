@@ -1,7 +1,7 @@
 from app.features.authentication.application.internal.outbound_services.hashing_service.hashing_service import \
     HashingService
 from app.features.authentication.application.internal.outbound_services.token_service.token_service import TokenService
-from app.features.authentication.domain.repositories.auth_repository import AuthService, UserRepository
+from app.features.authentication.domain.repositories.auth_repository import UserRepository
 
 """
 SignInUseCase is an abstract base class that defines the interface for sign-in use cases.

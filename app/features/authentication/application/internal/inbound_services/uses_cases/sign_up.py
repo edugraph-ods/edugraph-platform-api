@@ -2,7 +2,7 @@ from app.features.authentication.application.internal.outbound_services.hashing_
     HashingService
 from app.features.authentication.application.internal.outbound_services.token_service.token_service import TokenService
 from app.features.authentication.domain.models.user import User
-from app.features.authentication.domain.repositories.auth_repository import AuthService, UserRepository
+from app.features.authentication.domain.repositories.auth_repository import UserRepository
 
 """
 SignUpUseCase is an abstract base class that defines the interface for sign-up use cases.
