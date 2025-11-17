@@ -49,3 +49,13 @@ class UserRepository(ABC):
             bool: True if the user exists, False otherwise.
         """
         pass
+
+    @abstractmethod
+    async def get_user_by_id(self, user_id: str) -> User | None:
+        """Retrieve a user by their identifier."""
+        pass
+
+    @abstractmethod
+    async def update_password(self, user_id: str, hashed_password: str) -> None:
+        """Persist a new hashed password for the user."""
+        pass

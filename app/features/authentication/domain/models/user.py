@@ -1,45 +1,61 @@
 from dataclasses import dataclass, field
-from typing import Optional
 from datetime import datetime
+from typing import Optional
+import uuid
 
 """
 User is a dataclass that represents a user.
 
 Args:
     email (str): The user's email.
-    full_name (Optional[str]): The user's full name.
-    id (Optional[int]): The user's id.
-    hashed_password (Optional[str]): The user's hashed password.
+    username (str): The user's username.
+    id (str): The user's identifier (24-character hex string).
+    password (Optional[str]): The user's (hashed) password.
     is_active (bool): The user's active status.
     created_at (datetime): The user's creation date.
     updated_at (datetime): The user's update date.
+    account_id (str): The user's account id (24-character hex string).
+    recovery_code (Optional[str]): The user's recovery code.
+    recovery_code_expiration (Optional[datetime]): The user's recovery code expiration date.
 
 Returns:
     User: The User instance.
 """
+
+def _generate_object_id() -> str:
+    return uuid.uuid4().hex[:24]
+
 @dataclass
 class User:
     email: str
-    full_name: Optional[str] = None
-    id: Optional[int] = None
-    hashed_password: Optional[str] = None
+    username: str
+    id: str = field(default_factory=_generate_object_id)
+    password: Optional[str] = None
     is_active: bool = True
     created_at: datetime = field(default_factory=datetime.utcnow)
     updated_at: datetime = field(default_factory=datetime.utcnow)
+    account_id: str = field(default_factory=_generate_object_id)
+    recovery_code: Optional[str] = None
+    recovery_code_expiration: Optional[datetime] = None
 
     """
     create is a class method that creates a new User instance.
 
     Args:
         email (str): The user's email.
-        full_name (Optional[str]): The user's full name.
+        username (Optional[str]): The user's username.
 
     Returns:
         User: The User instance.
     """
     @classmethod
-    def create(cls, email: str, full_name: Optional[str] = None) -> "User":
+    def create(
+        cls,
+        email: str,
+        username: Optional[str] = None,
+    ) -> "User":
+        resolved_username = username or email.split("@")[0]
         return cls(
             email=email,
-            full_name=full_name,
+            username=resolved_username,
         )
