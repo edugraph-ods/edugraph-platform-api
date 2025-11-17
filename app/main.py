@@ -9,7 +9,7 @@ from app.shared.infrastructure.persistence.sql_alchemist.session import create_d
 from app.features.authentication.interfaces.rest.routers.auth_router import router as auth_router
 from app.features.education.interfaces.rest.controller.ingest_router import router as ingest_router
 from app.features.authentication.interfaces.rest.routers.users_router import router as users_router
-from app.features.authentication.interfaces.rest.middleware.auth_middleware import AuthMiddleware
+from app.features.authentication.infrastructure.middleware.auth_middleware import AuthMiddleware
 from app.features.authentication.infrastructure.tokens.jwt.services.token_service import TokenServiceImpl
 from app.core.config.config import settings
 

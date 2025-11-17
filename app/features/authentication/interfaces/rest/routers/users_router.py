@@ -18,11 +18,11 @@ from app.features.authentication.application.internal.outbound_services.hashing_
     HashingService,
 )
 from app.features.authentication.application.internal.outbound_services.token_service.token_service import TokenService
-from app.features.authentication.infrastructure.email.console_email_service import SMTPEmailService
-from app.features.authentication.infrastructure.hashing.bcrypt.services.hashing_service import (
+from app.features.authentication.infrastructure.email.gmail.services.email_service_impl import SMTPEmailService
+from app.features.authentication.infrastructure.hashing.bcrypt.services.hashing_service_impl import (
     HashingServiceImpl,
 )
-from app.features.authentication.infrastructure.tokens.jwt.services.token_service import TokenServiceImpl
+from app.features.authentication.infrastructure.tokens.jwt.services.token_service_impl import TokenServiceImpl
 from app.features.authentication.infrastructure.persistence.sql_alchemist.repositories.password_reset_token_repository_impl import (
     PasswordResetTokenRepositoryImpl,
 )

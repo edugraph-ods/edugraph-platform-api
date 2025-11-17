@@ -12,8 +12,8 @@ from app.features.authentication.interfaces.rest.schemas.sign_up_request import 
 from app.features.authentication.interfaces.rest.schemas.sign_in_request import SignInRequest
 from app.features.authentication.application.internal.inbound_services.uses_cases.sign_up import SignUpUseCase
 from app.features.authentication.application.internal.inbound_services.uses_cases.sign_in import SignInUseCase
-from app.features.authentication.infrastructure.hashing.bcrypt.services.hashing_service import HashingServiceImpl
-from app.features.authentication.infrastructure.tokens.jwt.services.token_service import TokenServiceImpl
+from app.features.authentication.infrastructure.hashing.bcrypt.services.hashing_service_impl import HashingServiceImpl
+from app.features.authentication.infrastructure.tokens.jwt.services.token_service_impl import TokenServiceImpl
 from app.features.authentication.infrastructure.persistence.sql_alchemist.repositories.user_repository_impl import UserRepositoryImpl
 
 from app.core.config.config import settings
