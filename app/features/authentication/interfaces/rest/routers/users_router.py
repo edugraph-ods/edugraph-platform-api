@@ -69,7 +69,10 @@ def get_token_service() -> TokenService:
 
 
 @router.get("/{userId}", response_model=ProfileResponse, summary="Users\nAvailable endpoints for users.")
-async def get_user_by_id(user_id: str, user_repository: UserRepository = Depends(get_user_repository)):
+async def get_user_by_id(
+    user_id: str,
+    user_repository: UserRepository = Depends(get_user_repository),
+):
     user = await user_repository.get_user_by_id(user_id)
     if user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")

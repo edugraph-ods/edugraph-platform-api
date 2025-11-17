@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from fastapi.openapi.utils import get_openapi
+
 from contextlib import asynccontextmanager
 
 from app.features.authentication.infrastructure.persistence.sql_alchemist.models.user_model import Base
@@ -7,6 +9,9 @@ from app.shared.infrastructure.persistence.sql_alchemist.session import create_d
 from app.features.authentication.interfaces.rest.routers.auth_router import router as auth_router
 from app.features.education.interfaces.rest.controller.ingest_router import router as ingest_router
 from app.features.authentication.interfaces.rest.routers.users_router import router as users_router
+from app.features.authentication.interfaces.rest.middleware.auth_middleware import AuthMiddleware
+from app.features.authentication.infrastructure.tokens.jwt.services.token_service import TokenServiceImpl
+from app.core.config.config import settings
 
 
 @asynccontextmanager
@@ -25,6 +30,41 @@ app = FastAPI(
     openapi_url="/openapi.json",
     lifespan=lifespan
 )
+
+token_service = TokenServiceImpl(
+    secret_key=settings.secret_key,
+    algorithm=settings.algorithm,
+    access_token_expire_minutes=settings.access_token_expire_minutes,
+)
+
+app.add_middleware(
+    AuthMiddleware,
+    token_service=token_service,
+    public_paths=set(),
+    public_prefixes=(),
+)
+
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    openapi_schema = get_openapi(
+        title=app.title,
+        version=app.version,
+        description=app.description,
+        routes=app.routes,
+    )
+    components = openapi_schema.setdefault("components", {})
+    security_schemes = components.setdefault("securitySchemes", {})
+    security_schemes["bearerAuth"] = {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+    }
+    openapi_schema["security"] = [{"bearerAuth": []}]
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+app.openapi = custom_openapi
 
 app.include_router(auth_router)
 app.include_router(users_router)
