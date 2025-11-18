@@ -40,7 +40,13 @@ token_service = TokenServiceImpl(
 app.add_middleware(
     AuthMiddleware,
     token_service=token_service,
-    public_paths=set(),
+    public_paths={
+        "/api/v1/sign-up",
+        "/api/v1/sign-in",
+        "/api/v1/users/recovery-code",
+        "/api/v1/users/verify-recovery-code",
+        "/api/v1/users/reset-password",
+    },
     public_prefixes=(),
 )
 
