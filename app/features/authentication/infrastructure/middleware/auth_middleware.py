@@ -43,7 +43,8 @@ class AuthMiddleware(BaseHTTPMiddleware):
         except Exception:
             pass
         if self._is_public(path):
-            print(f"AuthMiddleware: path {path} is public")
+            request.state.user_id = None
+            request.state.jwt_payload = None
             return await call_next(request)
 
         auth_header = request.headers.get("Authorization")
@@ -57,6 +58,8 @@ class AuthMiddleware(BaseHTTPMiddleware):
             print(f"AuthMiddleware: token invalid for path {path}")
             return JSONResponse({"detail": "Invalid token"}, status_code=401)
 
-        # Make JWT payload available to downstream handlers
         request.state.jwt_payload = payload
+        request.state.user_id = payload.get("user_id")
+        request.state.email = payload.get("sub")
+
         return await call_next(request)
