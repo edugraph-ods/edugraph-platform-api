@@ -30,7 +30,6 @@ class UserRepositoryImpl(UserRepository):
             return None
         return User(
             email=user_model.email,
-            username=user_model.username,
             id=user_model.id,
             password=user_model.password,
             is_active=user_model.is_active,

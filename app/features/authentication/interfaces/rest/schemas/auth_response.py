@@ -8,8 +8,4 @@ class AuthResponse(BaseModel):
     token: str
     userId: str
     email: EmailStr
-
-
-class ProfileResponse(BaseModel):
-    id: str
-    email: EmailStr
+    name: str

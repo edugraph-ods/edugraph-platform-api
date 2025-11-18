@@ -27,7 +27,6 @@ def _generate_object_id() -> str:
 @dataclass
 class User:
     email: str
-    username: str
     id: str = field(default_factory=_generate_object_id)
     password: Optional[str] = None
     is_active: bool = True
@@ -50,10 +49,7 @@ class User:
     def create(
         cls,
         email: str,
-        username: Optional[str] = None,
     ) -> "User":
-        resolved_username = username or email.split("@")[0]
         return cls(
             email=email,
-            username=resolved_username,
         )

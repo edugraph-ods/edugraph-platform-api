@@ -10,8 +10,8 @@ from app.features.authentication.interfaces.rest.schemas.auth_response import Au
 
 from app.features.authentication.interfaces.rest.schemas.sign_up_request import SignUpRequest
 from app.features.authentication.interfaces.rest.schemas.sign_in_request import SignInRequest
-from app.features.authentication.application.internal.inbound_services.uses_cases.sign_up import SignUpUseCase
-from app.features.authentication.application.internal.inbound_services.uses_cases.sign_in import SignInUseCase
+from app.features.authentication.application.internal.inbound_services.uses_cases.sign_up_use_case import SignUpUseCase
+from app.features.authentication.application.internal.inbound_services.uses_cases.sign_in_use_case import SignInUseCase
 from app.features.authentication.infrastructure.hashing.bcrypt.services.hashing_service_impl import HashingServiceImpl
 from app.features.authentication.infrastructure.tokens.jwt.services.token_service_impl import TokenServiceImpl
 from app.features.authentication.infrastructure.persistence.sql_alchemist.repositories.user_repository_impl import UserRepositoryImpl
@@ -98,11 +98,12 @@ async def sign_up(
 async def sign_in(
     request: SignInRequest,
     user_repository: UserRepository = Depends(get_user_repository),
+    student_repository: StudentRepository = Depends(get_student_repository),
     hash_service: HashingService = Depends(get_auth_service),
     token_service: TokenService = Depends(get_jwt_service)
 ):
     try:
-        use_case = SignInUseCase(user_repository, hash_service, token_service)
+        use_case = SignInUseCase(user_repository, student_repository, hash_service, token_service)
         result = await use_case.execute(
             email=request.email,
             password=request.password

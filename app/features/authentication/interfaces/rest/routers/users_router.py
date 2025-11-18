@@ -5,7 +5,6 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from app.features.authentication.application.internal.outbound_services.email_service.email_service import EmailService
 from app.features.authentication.domain.repositories.user_repository import UserRepository
 from app.features.authentication.domain.repositories.password_reset_token_repository import PasswordResetTokenRepository
-from app.features.authentication.interfaces.rest.schemas.auth_response import ProfileResponse
 from app.features.authentication.interfaces.rest.schemas.password_reset_request import PasswordResetRequest
 from app.features.authentication.interfaces.rest.schemas.reset_password_request import ResetPasswordRequest
 from app.features.authentication.interfaces.rest.schemas.verify_recovery_code_request import (
