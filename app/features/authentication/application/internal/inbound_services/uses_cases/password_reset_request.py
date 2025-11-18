@@ -5,7 +5,7 @@ from typing import Dict
 
 from app.features.authentication.application.internal.outbound_services.email_service.email_service import EmailService
 from app.features.authentication.domain.models.password_reset_token import PasswordResetToken
-from app.features.authentication.domain.repositories.auth_repository import UserRepository
+from app.features.authentication.domain.repositories.user_repository import UserRepository
 from app.features.authentication.domain.repositories.password_reset_token_repository import (
     PasswordResetTokenRepository,
 )
