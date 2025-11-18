@@ -4,13 +4,17 @@ from fastapi.openapi.utils import get_openapi
 from contextlib import asynccontextmanager
 
 from app.features.authentication.infrastructure.persistence.sql_alchemist.models.user_model import Base
-from app.shared.infrastructure.persistence.sql_alchemist.session import create_database_if_not_exists, engine
+import app.features.authentication.infrastructure.persistence.sql_alchemist.models.student_model
+import app.features.education.infrastructure.persistence.sql_alchemist.models.university_model
 
+from app.features.shared.infrastructure.persistence.sql_alchemist.session import create_database_if_not_exists, engine
+
+from app.features.authentication.infrastructure.tokens.jwt.services.token_service_impl import TokenServiceImpl
 from app.features.authentication.interfaces.rest.routers.auth_router import router as auth_router
-from app.features.education.interfaces.rest.controller.ingest_router import router as ingest_router
 from app.features.authentication.interfaces.rest.routers.users_router import router as users_router
-from app.features.authentication.interfaces.rest.middleware.auth_middleware import AuthMiddleware
-from app.features.authentication.infrastructure.tokens.jwt.services.token_service import TokenServiceImpl
+from app.features.authentication.interfaces.rest.routers.students_router import router as students_router
+from app.features.authentication.infrastructure.middleware.auth_middleware import AuthMiddleware
+
 from app.core.config.config import settings
 
 
@@ -74,7 +78,7 @@ app.openapi = custom_openapi
 
 app.include_router(auth_router)
 app.include_router(users_router)
-app.include_router(ingest_router)
+app.include_router(students_router)
 
 
 if __name__ == "__main__":
