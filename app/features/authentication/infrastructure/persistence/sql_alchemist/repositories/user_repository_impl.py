@@ -1,8 +1,9 @@
 from sqlalchemy import select, update
 from app.features.authentication.domain.models.user import User
-from app.features.authentication.domain.repositories.auth_repository import UserRepository
+from app.features.authentication.domain.repositories.user_repository import UserRepository
 from app.features.authentication.infrastructure.persistence.sql_alchemist.models.user_model import UserModel
 from datetime import datetime
+from datetime import timezone
 
 """
 UserRepositorySQL is a class that implements the UserRepository interface.
@@ -35,7 +36,6 @@ class UserRepositoryImpl(UserRepository):
             is_active=user_model.is_active,
             created_at=user_model.created_at,
             updated_at=user_model.updated_at,
-            account_id=user_model.account_id,
             recovery_code=user_model.recovery_code,
             recovery_code_expiration=user_model.recovery_code_expiration,
         )
@@ -59,9 +59,7 @@ class UserRepositoryImpl(UserRepository):
         user_model = UserModel(
             id=user.id,
             email=user.email,
-            username=user.username,
             password=user.password,
-            account_id=user.account_id,
             recovery_code=user.recovery_code,
             recovery_code_expiration=user.recovery_code_expiration,
             is_active=user.is_active,
@@ -74,7 +72,6 @@ class UserRepositoryImpl(UserRepository):
         await self.db.refresh(user_model)
         
         user.id = user_model.id
-        user.account_id = user_model.account_id
         user.created_at = user_model.created_at
         user.updated_at = user_model.updated_at
         return user
@@ -106,7 +103,7 @@ class UserRepositoryImpl(UserRepository):
             .where(UserModel.id == user_id)
             .values(
                 password=hashed_password,
-                updated_at=datetime.utcnow(),
+                updated_at=datetime.now(timezone.utc),
             )
         )
         await self.db.commit()

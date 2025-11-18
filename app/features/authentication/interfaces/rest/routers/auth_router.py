@@ -4,8 +4,8 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from app.features.authentication.application.internal.outbound_services.hashing_service.hashing_service import \
     HashingService
 from app.features.authentication.application.internal.outbound_services.token_service.token_service import TokenService
-from app.features.authentication.application.internal.outbound_services.email_service.email_service import EmailService
-from app.features.authentication.domain.repositories.auth_repository import UserRepository
+from app.features.authentication.domain.repositories.user_repository import UserRepository
+from app.features.authentication.domain.repositories.student_repository import StudentRepository
 from app.features.authentication.interfaces.rest.schemas.auth_response import AuthResponse
 
 from app.features.authentication.interfaces.rest.schemas.sign_up_request import SignUpRequest
@@ -15,9 +15,10 @@ from app.features.authentication.application.internal.inbound_services.uses_case
 from app.features.authentication.infrastructure.hashing.bcrypt.services.hashing_service_impl import HashingServiceImpl
 from app.features.authentication.infrastructure.tokens.jwt.services.token_service_impl import TokenServiceImpl
 from app.features.authentication.infrastructure.persistence.sql_alchemist.repositories.user_repository_impl import UserRepositoryImpl
+from app.features.authentication.infrastructure.persistence.sql_alchemist.repositories.student_repository_impl import StudentRepositoryImpl
 
 from app.core.config.config import settings
-from app.shared.infrastructure.persistence.sql_alchemist.session import get_db
+from app.features.shared.infrastructure.persistence.sql_alchemist.session import get_db
 
 bearer_scheme = HTTPBearer(description="Enter the JWT token using the format: Bearer <token>")
 
@@ -38,6 +39,10 @@ def get_jwt_service() -> TokenService:
 
 def get_user_repository(db=Depends(get_db)) -> UserRepository:
     return UserRepositoryImpl(db)
+
+
+def get_student_repository(db=Depends(get_db)) -> StudentRepository:
+    return StudentRepositoryImpl(db)
 
 
 async def get_current_user(
@@ -70,14 +75,15 @@ async def get_current_user(
 async def sign_up(
     request: SignUpRequest,
     user_repository: UserRepository = Depends(get_user_repository),
+    student_repository: StudentRepository = Depends(get_student_repository),
     hash_service: HashingService = Depends(get_auth_service),
 ):
     try:
-        use_case = SignUpUseCase(user_repository, hash_service)
+        use_case = SignUpUseCase(user_repository, student_repository, hash_service)
         result = await use_case.execute(
             email=request.email,
             password=request.password,
-            username=request.username
+            name=request.name
         )
         return result
 

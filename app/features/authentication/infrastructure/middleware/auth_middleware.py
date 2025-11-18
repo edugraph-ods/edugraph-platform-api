@@ -35,16 +35,26 @@ class AuthMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next: Callable):
         path = request.url.path
+        # Debugging output: show path and configured public paths/prefixes
+        try:
+            print(
+                f"AuthMiddleware: incoming path={path}, public_paths={self.public_paths}, public_prefixes={self.public_prefixes}"
+            )
+        except Exception:
+            pass
         if self._is_public(path):
+            print(f"AuthMiddleware: path {path} is public")
             return await call_next(request)
 
         auth_header = request.headers.get("Authorization")
         if not auth_header or not auth_header.startswith("Bearer "):
+            print(f"AuthMiddleware: missing/invalid Authorization header for path {path}")
             return JSONResponse({"detail": "Unauthorized"}, status_code=401)
 
         token = auth_header.split(" ", 1)[1]
         payload = self.token_service.verify_token(token)
         if not payload:
+            print(f"AuthMiddleware: token invalid for path {path}")
             return JSONResponse({"detail": "Invalid token"}, status_code=401)
 
         # Make JWT payload available to downstream handlers

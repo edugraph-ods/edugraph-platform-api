@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 import uuid
 
@@ -14,7 +14,6 @@ Args:
     is_active (bool): The user's active status.
     created_at (datetime): The user's creation date.
     updated_at (datetime): The user's update date.
-    account_id (str): The user's account id (24-character hex string).
     recovery_code (Optional[str]): The user's recovery code.
     recovery_code_expiration (Optional[datetime]): The user's recovery code expiration date.
 
@@ -32,9 +31,8 @@ class User:
     id: str = field(default_factory=_generate_object_id)
     password: Optional[str] = None
     is_active: bool = True
-    created_at: datetime = field(default_factory=datetime.utcnow)
-    updated_at: datetime = field(default_factory=datetime.utcnow)
-    account_id: str = field(default_factory=_generate_object_id)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     recovery_code: Optional[str] = None
     recovery_code_expiration: Optional[datetime] = None
 

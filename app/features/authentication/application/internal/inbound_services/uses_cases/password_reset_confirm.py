@@ -2,7 +2,7 @@ import hashlib
 from typing import Dict
 
 from app.features.authentication.application.internal.outbound_services.hashing_service.hashing_service import HashingService
-from app.features.authentication.domain.repositories.auth_repository import UserRepository
+from app.features.authentication.domain.repositories.user_repository import UserRepository
 from app.features.authentication.domain.repositories.password_reset_token_repository import (
     PasswordResetTokenRepository,
 )

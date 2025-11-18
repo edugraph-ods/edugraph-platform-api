@@ -3,7 +3,7 @@ import hashlib
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.features.authentication.application.internal.outbound_services.email_service.email_service import EmailService
-from app.features.authentication.domain.repositories.auth_repository import UserRepository
+from app.features.authentication.domain.repositories.user_repository import UserRepository
 from app.features.authentication.domain.repositories.password_reset_token_repository import PasswordResetTokenRepository
 from app.features.authentication.interfaces.rest.schemas.auth_response import ProfileResponse
 from app.features.authentication.interfaces.rest.schemas.password_reset_request import PasswordResetRequest
@@ -31,7 +31,7 @@ from app.features.authentication.infrastructure.persistence.sql_alchemist.reposi
 )
 
 from app.core.config.config import settings
-from app.shared.infrastructure.persistence.sql_alchemist.session import get_db
+from app.features.shared.infrastructure.persistence.sql_alchemist.session import get_db
 
 router = APIRouter(prefix="/api/v1/users", tags=["users"])
 
@@ -66,19 +66,6 @@ def get_token_service() -> TokenService:
         algorithm=settings.algorithm,
         access_token_expire_minutes=settings.access_token_expire_minutes,
     )
-
-
-@router.get("/{userId}", response_model=ProfileResponse, summary="Users\nAvailable endpoints for users.")
-async def get_user_by_id(
-    user_id: str,
-    user_repository: UserRepository = Depends(get_user_repository),
-):
-    user = await user_repository.get_user_by_id(user_id)
-    if user is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-
-    return ProfileResponse(id=str(user.id), username=user.username, email=user.email)
-
 
 @router.post("/recovery-code", status_code=status.HTTP_202_ACCEPTED, summary="Send a recovery code to the email service")
 async def request_password_reset(
