@@ -14,6 +14,7 @@ class CareerRepositoryImpl(CareerRepository):
         return Career(
             id=model.id,
             name=model.name,
+            program=model.program,
             university_id=model.university_id,
         )
 
