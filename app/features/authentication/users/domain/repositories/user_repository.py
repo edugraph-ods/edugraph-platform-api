@@ -3,7 +3,7 @@ from app.features.authentication.users.domain.models.user import User
 
 class UserRepository(ABC):
     """
-    UserRepository is an abstract base class that defines the interface for user repositories.
+    UserRepository is an abstract base class that defines the interface for user persistence.
 
     Args:
         ABC (ABC): The abstract base class.

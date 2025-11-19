@@ -12,3 +12,5 @@ class CareerModel(Base):
     university_id = Column(String(36), ForeignKey("universities.id"), nullable=False)
 
     university = relationship("UniversityModel", back_populates="careers")
+
+    courses = relationship("CourseModel", back_populates="career", cascade="all, delete-orphan")

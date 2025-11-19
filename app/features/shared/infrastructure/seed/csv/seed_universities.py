@@ -5,15 +5,26 @@ from app.features.education.universities.application.internal.inbound_services.u
 from app.features.education.universities.infrastructure.persistence.sql_alchemist.repositories.university_repository_impl import UniversityRepositoryImpl
 from app.features.shared.infrastructure.persistence.sql_alchemist.start.session import async_session_maker
 
-async def seed():
-    async with async_session_maker() as session:
-        repository = UniversityRepositoryImpl(session)
-        use_case = CreateUniversityUseCase(repository)
+class UniversitySeeder:
+    def __init__(self, session, university_repo):
+        self.session = session
+        self.university_repo = university_repo
 
-        await UniversityCSVLoader.load_and_insert(
-            "data/universities.data",
-            use_case
-        )
+    async def seed(self, path: str):
+        loader = UniversityCSVLoader()
+        rows = loader.load(path)
 
-if __name__ == "__main__":
-    asyncio.run(seed())
+        use_case = CreateUniversityUseCase(self.university_repo)
+
+        raw_unis = {row["Universidad "].strip() for row in rows}
+
+        for raw in raw_unis:
+            name, acronym = UniversityCSVLoader.parse(raw)
+
+            try:
+                await use_case.execute(name=name, acronym=acronym)
+            except ValueError:
+                # Universidad ya existe → ignorar
+                pass
+
+        print(">>> Universities seeded successfully.")
