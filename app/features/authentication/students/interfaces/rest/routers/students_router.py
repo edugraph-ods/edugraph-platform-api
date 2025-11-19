@@ -9,7 +9,7 @@ from app.features.authentication.students.infrastructure.persistence.sql_alchemi
 from app.features.authentication.users.infrastructure.persistence.sql_alchemist.repositories.user_repository_impl import \
     UserRepositoryImpl
 from app.features.authentication.students.interfaces.rest.schemas.student_profile_response import StudentProfileResponse
-from app.features.shared.infrastructure.persistence.sql_alchemist.session import get_db
+from app.features.shared.infrastructure.persistence.sql_alchemist.start.session import get_db
 
 router = APIRouter(prefix="/api/v1", tags=["students"])
 

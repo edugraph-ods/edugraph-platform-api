@@ -7,7 +7,7 @@ from app.features.education.universities.domain.repositories.university_reposito
 from app.features.education.universities.infrastructure.persistence.sql_alchemist.repositories.university_repository_impl import \
     UniversityRepositoryImpl
 from app.features.education.universities.interfaces.rest.schemas.universities_response import UniversityResponse
-from app.features.shared.infrastructure.persistence.sql_alchemist.session import get_db
+from app.features.shared.infrastructure.persistence.sql_alchemist.start.session import get_db
 
 router = APIRouter(prefix="/api/v1/universities", tags=["university"])
 

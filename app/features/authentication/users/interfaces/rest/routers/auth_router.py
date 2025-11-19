@@ -18,7 +18,7 @@ from app.features.authentication.users.infrastructure.persistence.sql_alchemist.
 from app.features.authentication.students.infrastructure.persistence.sql_alchemist.repositories.student_repository_impl import StudentRepositoryImpl
 
 from app.core.config.config import settings
-from app.features.shared.infrastructure.persistence.sql_alchemist.session import get_db
+from app.features.shared.infrastructure.persistence.sql_alchemist.start.session import get_db
 
 bearer_scheme = HTTPBearer(description="Enter the JWT token using the format: Bearer <token>")
 

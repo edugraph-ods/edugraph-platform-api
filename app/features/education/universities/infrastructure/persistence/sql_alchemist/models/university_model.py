@@ -1,7 +1,8 @@
 ﻿from sqlalchemy import Column, String
-from sqlalchemy.orm import relationship, declarative_base
+from sqlalchemy.orm import relationship
 
-Base = declarative_base()
+from app.features.shared.infrastructure.persistence.sql_alchemist.base.base import Base
+
 
 class UniversityModel(Base):
     __tablename__ = "universities"
