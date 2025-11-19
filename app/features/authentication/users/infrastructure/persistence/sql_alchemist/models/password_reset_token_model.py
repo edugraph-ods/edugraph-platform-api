@@ -3,7 +3,7 @@ import uuid
 
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, String
 
-from app.features.authentication.users.infrastructure.persistence.sql_alchemist.models.user_model import Base
+from app.features.shared.infrastructure.persistence.sql_alchemist.base.base import Base
 
 
 def _generate_object_id() -> str:

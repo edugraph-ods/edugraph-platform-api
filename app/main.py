@@ -8,6 +8,8 @@ from contextlib import asynccontextmanager
 from app.features.authentication.users.infrastructure.persistence.sql_alchemist.models.user_model import Base
 import app.features.authentication.students.infrastructure.persistence.sql_alchemist.models.student_model
 import app.features.education.universities.infrastructure.persistence.sql_alchemist.models.university_model
+from app.features.education.careers.infrastructure.persistence.sql_alchemist.repositories.career_repository_impl import \
+    CareerRepositoryImpl
 
 from app.features.education.universities.application.internal.inbound_services.use_cases.create_university_use_case import (
     CreateUniversityUseCase,
@@ -19,7 +21,7 @@ from app.features.education.universities.infrastructure.persistence.sql_alchemis
     UniversityRepositoryImpl,
 )
 
-from app.features.shared.infrastructure.persistence.sql_alchemist.session import (
+from app.features.shared.infrastructure.persistence.sql_alchemist.start.session import (
     create_database_if_not_exists,
     engine,
     async_session_maker,
@@ -45,6 +47,7 @@ from app.features.authentication.users.infrastructure.middleware.auth_middleware
 )
 
 from app.core.config.config import settings
+from app.features.shared.infrastructure.seed.csv.seed_careers import CareerSeeder
 
 
 def get_csv_path(filename: str) -> str:
@@ -54,41 +57,41 @@ def get_csv_path(filename: str) -> str:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await create_database_if_not_exists()
+    try:
+        await create_database_if_not_exists()
+    except Exception:
+        pass
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
     # Seeder
     async with async_session_maker() as session:
-        repo = UniversityRepositoryImpl(session)
+        university_repo = UniversityRepositoryImpl(session)
+        career_repo = CareerRepositoryImpl(session)
 
-        count = await repo.count()
-
-        if count == 0:
-            print(">>> Seeding universities from CSV...")
+        uni_count = await university_repo.count()
+        if uni_count == 0:
+            print(">>> Seeding universities and careers from CSV...")
+            csv_path = get_csv_path("Malla-Curricular-Dataset-data.csv")
 
             loader = UniversityCSVLoader()
+            rows = loader.load(csv_path)
 
-            csv_path = get_csv_path("Malla-Curricular-Dataset-data.csv")
-            print(">>> CSV PATH:", csv_path)
+            raw_universities = {row["Universidad "].strip() for row in rows}
+            uni_use_case = CreateUniversityUseCase(university_repo)
 
-            universities = loader.load(csv_path)
-
-            print(">>> COLUMNAS DEL CSV:", universities[0].keys())
-
-            raw_names = {row["Universidad "].strip() for row in universities}
-
-            use_case = CreateUniversityUseCase(repo)
-
-            for raw in raw_names:
+            for raw in raw_universities:
                 name, acronym = UniversityCSVLoader.parse(raw)
                 try:
-                    await use_case.execute(name, acronym)
+                    await uni_use_case.execute(name, acronym)
                 except ValueError:
                     pass
 
             print(">>> Universities seeded successfully.")
+
+            career_seeder = CareerSeeder(session, career_repo, university_repo)
+            await career_seeder.seed(csv_path)
 
     yield
 

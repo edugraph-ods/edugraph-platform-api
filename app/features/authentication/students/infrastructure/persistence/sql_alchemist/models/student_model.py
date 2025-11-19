@@ -4,7 +4,8 @@ from sqlalchemy import Column, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime, timezone
 
-from app.features.authentication.users.infrastructure.persistence.sql_alchemist.models.user_model import Base
+from app.features.shared.infrastructure.persistence.sql_alchemist.base.base import Base
+
 
 class StudentModel(Base):
     __tablename__ = "students"

@@ -30,7 +30,7 @@ from app.features.authentication.users.infrastructure.persistence.sql_alchemist.
 )
 
 from app.core.config.config import settings
-from app.features.shared.infrastructure.persistence.sql_alchemist.session import get_db
+from app.features.shared.infrastructure.persistence.sql_alchemist.start.session import get_db
 
 router = APIRouter(prefix="/api/v1/users", tags=["users"])
 

@@ -8,3 +8,7 @@ class CareerRepository(ABC):
     @abstractmethod
     async def save(self, career: Career) -> Career:
         pass
+
+    @abstractmethod
+    async def find_by_name(self, name: str) -> Career | None:
+        pass

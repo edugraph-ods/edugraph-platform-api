@@ -1,5 +1,8 @@
-﻿from app.features.education.careers.domain.models.career import Career
+﻿from sqlalchemy import select
+
+from app.features.education.careers.domain.models.career import Career
 from app.features.education.careers.domain.repositories.career_repository import CareerRepository
+from app.features.education.careers.infrastructure.persistence.sql_alchemist.models.career_model import CareerModel
 
 
 class CareerRepositoryImpl(CareerRepository):
@@ -15,12 +18,24 @@ class CareerRepositoryImpl(CareerRepository):
         )
 
     async def save(self, career: Career) -> Career:
-        model = Career(
+        model = CareerModel(
             id=career.id,
             name=career.name,
+            program=career.program,
             university_id=career.university_id,
         )
         self.db.add(model)
         await self.db.commit()
         return career
+
+    async def find_by_name(self, name: str) -> Career | None:
+        query = select(CareerModel).where(CareerModel.name == name)
+
+        result = await self.db.execute(query)
+        model = result.scalar_one_or_none()
+
+        if model is None:
+            return None
+
+        return self._to_domain(model)
 
