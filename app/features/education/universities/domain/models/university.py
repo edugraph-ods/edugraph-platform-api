@@ -9,13 +9,15 @@ def _generate_object_id() -> str:
 @dataclass
 class University:
     name: str
+    acronym: str
 
     id: str = field(default_factory=_generate_object_id)
     created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
     @classmethod
-    def create(cls, name: str):
+    def create(cls, name: str, acronym: str):
         return cls(
             name=name,
+            acronym=acronym,
         )

@@ -19,3 +19,4 @@ class StudentModel(Base):
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
     user = relationship("UserModel", back_populates="student")
+    university = relationship("UniversityModel", back_populates="students")
