@@ -11,7 +11,7 @@ def _generate_object_id() -> str:
 class Student:
     name: str
     user_id: str
-    university_id: str | None = None
+    university_id: str
 
     id: str = field(default_factory=_generate_object_id)
     created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
