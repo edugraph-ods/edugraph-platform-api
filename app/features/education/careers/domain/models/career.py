@@ -1,21 +1,21 @@
 ﻿import uuid
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
 
 
 def _generate_object_id() -> str:
     return uuid.uuid4().hex[:24]
-
 @dataclass
-class University:
+class Career:
     name: str
-    acronym: str
+    program: str
+    university_id: str
 
     id: str = field(default_factory=_generate_object_id)
 
     @classmethod
-    def create(cls, name: str, acronym: str):
+    def create(cls, name: str, program: str, university_id: str):
         return cls(
             name=name,
-            acronym=acronym,
+            program=program,
+            university_id=university_id,
         )
