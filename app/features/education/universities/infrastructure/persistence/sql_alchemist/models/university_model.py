@@ -1,7 +1,7 @@
 ﻿from sqlalchemy import Column, String
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, declarative_base
 
-from app.features.authentication.users.infrastructure.persistence.sql_alchemist.models.user_model import Base
+Base = declarative_base()
 
 class UniversityModel(Base):
     __tablename__ = "universities"
@@ -11,4 +11,5 @@ class UniversityModel(Base):
     acronym = Column(String(3), nullable=False)
 
     students = relationship("StudentModel", back_populates="university")
+    careers = relationship("CareerModel", back_populates="university")
 
