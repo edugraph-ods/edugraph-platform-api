@@ -6,7 +6,7 @@ from app.features.authentication.students.domain.models.student import Student
 class StudentRepository(ABC):
 
     @abstractmethod
-    async def create_student(self, user_id: str, name: str) -> Student:
+    async def create_student(self, user_id: str, name: str, university_id: str) -> Student:
         pass
 
     @abstractmethod

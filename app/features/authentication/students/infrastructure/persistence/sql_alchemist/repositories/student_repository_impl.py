@@ -19,11 +19,11 @@ class StudentRepositoryImpl(StudentRepository):
             updated_at=model.updated_at,
         )
 
-    async def create_student(self, user_id: str, name: str) -> Student:
+    async def create_student(self, user_id: str, name: str, university_id: str) -> Student:
         model = StudentModel(
             user_id=user_id,
             name=name,
-            university_id=None,
+            university_id=university_id,
         )
 
         self.db.add(model)

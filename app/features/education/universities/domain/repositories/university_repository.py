@@ -20,3 +20,11 @@ class UniversityRepository(ABC):
     @abstractmethod
     async def count(self):
         pass
+
+    @abstractmethod
+    async def find_by_acronym(self, acronym: str) -> University | None:
+        pass
+
+    @abstractmethod
+    async def find_by_id(self, id: str) -> University | None:
+        pass

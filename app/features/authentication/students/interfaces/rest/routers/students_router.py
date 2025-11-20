@@ -9,6 +9,9 @@ from app.features.authentication.students.infrastructure.persistence.sql_alchemi
 from app.features.authentication.users.infrastructure.persistence.sql_alchemist.repositories.user_repository_impl import \
     UserRepositoryImpl
 from app.features.authentication.students.interfaces.rest.schemas.student_profile_response import StudentProfileResponse
+from app.features.education.universities.domain.repositories.university_repository import UniversityRepository
+from app.features.education.universities.infrastructure.persistence.sql_alchemist.repositories.university_repository_impl import \
+    UniversityRepositoryImpl
 from app.features.shared.infrastructure.persistence.sql_alchemist.start.session import get_db
 
 router = APIRouter(prefix="/api/v1", tags=["students"])
@@ -19,15 +22,19 @@ def get_user_repository(db=Depends(get_db)) -> UserRepository:
 def get_student_repository(db=Depends(get_db)) -> StudentRepository:
     return StudentRepositoryImpl(db)
 
-@router.get("/student/me", response_model=StudentProfileResponse, summary="Get the Student Profile")
+def get_university_repository(db=Depends(get_db)) -> UniversityRepository:
+    return UniversityRepositoryImpl(db)
+
+@router.get("/students/me", response_model=StudentProfileResponse, summary="Get the Student Profile")
 async def get_my_student_profile(
     request: Request,
     user_repository: UserRepository = Depends(get_user_repository),
     student_repository: StudentRepository = Depends(get_student_repository),
+    university_repository: UniversityRepository = Depends(get_university_repository)
 ):
 
     try:
-        use_case = GetStudentProfileUseCase(student_repository, user_repository)
+        use_case = GetStudentProfileUseCase(student_repository, user_repository, university_repository)
         result = await use_case.execute(request.state.user_id)
         return StudentProfileResponse(**result)
     except ValueError as e:

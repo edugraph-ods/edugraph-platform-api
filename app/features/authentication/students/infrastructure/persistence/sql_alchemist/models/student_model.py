@@ -13,8 +13,8 @@ class StudentModel(Base):
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     name = Column(String(255), nullable=False)
 
-    user_id = Column(String(24), ForeignKey("users._id"), nullable=False)
-    university_id = Column(String(24), ForeignKey("universities.id"), nullable=True)
+    user_id = Column(String(36), ForeignKey("users._id"), nullable=False)
+    university_id = Column(String(36), ForeignKey("universities.id"), nullable=True)
 
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))

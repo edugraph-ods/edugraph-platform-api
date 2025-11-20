@@ -18,6 +18,9 @@ from app.features.authentication.users.infrastructure.persistence.sql_alchemist.
 from app.features.authentication.students.infrastructure.persistence.sql_alchemist.repositories.student_repository_impl import StudentRepositoryImpl
 
 from app.core.config.config import settings
+from app.features.education.universities.domain.repositories.university_repository import UniversityRepository
+from app.features.education.universities.infrastructure.persistence.sql_alchemist.repositories.university_repository_impl import \
+    UniversityRepositoryImpl
 from app.features.shared.infrastructure.persistence.sql_alchemist.start.session import get_db
 
 bearer_scheme = HTTPBearer(description="Enter the JWT token using the format: Bearer <token>")
@@ -43,6 +46,9 @@ def get_user_repository(db=Depends(get_db)) -> UserRepository:
 
 def get_student_repository(db=Depends(get_db)) -> StudentRepository:
     return StudentRepositoryImpl(db)
+
+def get_universities_repository(db=Depends(get_db)) -> UniversityRepository:
+    return UniversityRepositoryImpl(db)
 
 
 async def get_current_user(
@@ -76,10 +82,11 @@ async def sign_up(
     request: SignUpRequest,
     user_repository: UserRepository = Depends(get_user_repository),
     student_repository: StudentRepository = Depends(get_student_repository),
+    university_repository: UniversityRepository = Depends(get_universities_repository),
     hash_service: HashingService = Depends(get_auth_service),
 ):
     try:
-        use_case = SignUpUseCase(user_repository, student_repository, hash_service)
+        use_case = SignUpUseCase(user_repository, student_repository, university_repository, hash_service)
         result = await use_case.execute(
             email=request.email,
             password=request.password,

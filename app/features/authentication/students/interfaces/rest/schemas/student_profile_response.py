@@ -3,3 +3,4 @@
 class StudentProfileResponse(BaseModel):
     name: str
     email: str
+    university: str

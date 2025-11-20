@@ -49,4 +49,19 @@ class UniversityRepositoryImpl(UniversityRepository):
         )
         return result.scalar()
 
+    async def find_by_acronym(self, acronym: str) -> University | None:
+        query = select(UniversityModel).where(UniversityModel.acronym == acronym)
+        result = await self.db.execute(query)
+        model = result.scalar_one_or_none()
+        if model is None:
+            return None
+        return self._to_domain(model)
+
+    async def find_by_id(self, id: str) -> University | None:
+        query = select(UniversityModel).where(UniversityModel.id == id)
+        result = await self.db.execute(query)
+        model = result.scalar_one_or_none()
+        if model is None:
+            return None
+        return self._to_domain(model)
 
