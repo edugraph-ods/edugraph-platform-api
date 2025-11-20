@@ -46,6 +46,9 @@ from app.features.education.careers.interfaces.rest.routers.universities_careers
 from app.features.education.careers.interfaces.rest.routers.careers_router import (
     router as careers_router,
 )
+from app.features.education.courses.interfaces.rest.routers.carrers_courses_router import (
+    router as careers_courses_router,
+)
 from app.features.authentication.users.infrastructure.middleware.auth_middleware import (
     AuthMiddleware,
 )
@@ -168,6 +171,7 @@ app.include_router(students_router)
 app.include_router(universities_router)
 app.include_router(universities_careers_router)
 app.include_router(careers_router)
+app.include_router(careers_courses_router)
 
 
 if __name__ == "__main__":
