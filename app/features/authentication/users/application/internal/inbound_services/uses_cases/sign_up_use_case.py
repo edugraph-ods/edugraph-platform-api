@@ -39,6 +39,10 @@ class SignUpUseCase:
         acronym = User.extrac_university_acronym_from_email(user.email)
 
         university = await self.university_repository.find_by_acronym(acronym)
+        if university is None:
+            raise ValueError(
+                "University not found for email domain. Please use an institutional email or contact support."
+            )
 
         created_user = await self.user_repository.create_user(user)
 
