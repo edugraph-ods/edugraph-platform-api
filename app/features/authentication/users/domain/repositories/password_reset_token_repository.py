@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Sequence
 
-from app.features.authentication.users.domain.models.password_reset_token import PasswordResetToken
+from app.features.authentication.users.domain.models.entities.password_reset_token import PasswordResetToken
 
 
 class PasswordResetTokenRepository(ABC):

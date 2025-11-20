@@ -1,8 +1,6 @@
-﻿from typing import List
+﻿from sqlalchemy import select
 
-from sqlalchemy import select
-
-from app.features.education.careers.domain.models.career import Career
+from app.features.education.careers.domain.models.entities.career import Career
 from app.features.education.careers.domain.repositories.career_repository import CareerRepository
 from app.features.education.careers.infrastructure.persistence.sql_alchemist.models.career_model import CareerModel
 

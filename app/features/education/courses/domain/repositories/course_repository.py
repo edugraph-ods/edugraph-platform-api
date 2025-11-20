@@ -1,6 +1,6 @@
 ﻿from abc import ABC, abstractmethod
 
-from app.features.education.courses.domain.models.course import Course
+from app.features.education.courses.domain.models.entities.course import Course
 
 class CourseRepository(ABC):
 
@@ -18,4 +18,8 @@ class CourseRepository(ABC):
 
     @abstractmethod
     async def find_by_career_id(self, career_id: str) -> list[Course]:
+        pass
+
+    @abstractmethod
+    async def find_by_id(self, course_id: str) -> Course | None:
         pass

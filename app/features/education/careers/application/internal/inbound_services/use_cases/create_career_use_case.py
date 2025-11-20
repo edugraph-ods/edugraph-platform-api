@@ -1,6 +1,6 @@
 ﻿import uuid
 
-from app.features.education.careers.domain.models.career import Career
+from app.features.education.careers.domain.models.entities.career import Career
 from app.features.education.careers.domain.repositories.career_repository import CareerRepository
 
 class CreateCareerUseCase:

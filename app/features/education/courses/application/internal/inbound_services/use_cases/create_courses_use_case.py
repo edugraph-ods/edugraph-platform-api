@@ -1,4 +1,4 @@
-﻿from app.features.education.courses.domain.models.course import Course
+﻿from app.features.education.courses.domain.models.entities.course import Course
 from app.features.education.courses.domain.repositories.course_repository import CourseRepository
 
 

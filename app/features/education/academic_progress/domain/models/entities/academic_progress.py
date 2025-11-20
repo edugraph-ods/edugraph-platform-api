@@ -1,8 +1,8 @@
 ﻿from dataclasses import dataclass
 
-from app.features.education.courses.domain.models.course import Course
-from app.features.education.courses.domain.value_objects.course_status import CourseStatus
-from app.features.education.courses.domain.value_objects.cycle_credits import CycleCredits
+from app.features.education.courses.domain.models.entities.course import Course
+from app.features.education.academic_progress.domain.models.value_objects.course_status import CourseStatus
+from app.features.education.academic_progress.domain.models.value_objects.cycle_credits import CycleCredits
 
 
 @dataclass

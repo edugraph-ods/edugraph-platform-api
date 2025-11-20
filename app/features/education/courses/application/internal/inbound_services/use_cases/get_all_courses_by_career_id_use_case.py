@@ -5,8 +5,8 @@ class GetAllCoursesByCareerIdUseCase:
     def __init__(self, repository: CourseRepository):
         self.repository = repository
 
-    async def execute(self, university_id: str):
-        courses = await self.repository.find_by_career_id(university_id)
+    async def execute(self, career_id: str):
+        courses = await self.repository.find_by_career_id(career_id)
 
 
         if not courses:

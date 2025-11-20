@@ -1,6 +1,6 @@
 ﻿from app.features.education.careers.application.internal.inbound_services.use_cases.create_career_use_case import \
     CreateCareerUseCase
-from app.features.education.careers.domain.models.career import Career
+from app.features.education.careers.domain.models.entities.career import Career
 from app.features.education.careers.infrastructure.loaders.csv.career_csv_loader import CareerCSVLoader
 from app.features.education.universities.infrastructure.loaders.csv.university_csv_loader import UniversityCSVLoader
 
