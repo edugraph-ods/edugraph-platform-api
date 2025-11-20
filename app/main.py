@@ -15,12 +15,6 @@ from app.features.education.courses.infrastructure.persistence.sql_alchemist.rep
 from app.features.education.courses.infrastructure.persistence.sql_alchemist.repositories.course_repository_impl import \
     CourseRepositoryImpl
 
-from app.features.education.universities.application.internal.inbound_services.use_cases.create_university_use_case import (
-    CreateUniversityUseCase,
-)
-from app.features.education.universities.infrastructure.loaders.csv.university_csv_loader import (
-    UniversityCSVLoader,
-)
 from app.features.education.universities.infrastructure.persistence.sql_alchemist.repositories.university_repository_impl import (
     UniversityRepositoryImpl,
 )
@@ -45,6 +39,12 @@ from app.features.authentication.students.interfaces.rest.routers.students_route
 )
 from app.features.education.universities.interfaces.rest.routers.universities_router import (
     router as universities_router,
+)
+from app.features.education.careers.interfaces.rest.routers.universities_careers_router import (
+    router as universities_careers_router,
+)
+from app.features.education.careers.interfaces.rest.routers.careers_router import (
+    router as careers_router,
 )
 from app.features.authentication.users.infrastructure.middleware.auth_middleware import (
     AuthMiddleware,
@@ -166,6 +166,8 @@ app.include_router(auth_router)
 app.include_router(users_router)
 app.include_router(students_router)
 app.include_router(universities_router)
+app.include_router(universities_careers_router)
+app.include_router(careers_router)
 
 
 if __name__ == "__main__":

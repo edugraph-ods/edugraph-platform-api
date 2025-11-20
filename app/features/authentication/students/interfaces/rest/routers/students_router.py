@@ -14,7 +14,7 @@ from app.features.education.universities.infrastructure.persistence.sql_alchemis
     UniversityRepositoryImpl
 from app.features.shared.infrastructure.persistence.sql_alchemist.start.session import get_db
 
-router = APIRouter(prefix="/api/v1", tags=["students"])
+router = APIRouter(prefix="/api/v1", tags=["Students"])
 
 def get_user_repository(db=Depends(get_db)) -> UserRepository:
     return UserRepositoryImpl(db)

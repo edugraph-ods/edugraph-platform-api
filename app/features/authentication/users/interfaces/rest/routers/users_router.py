@@ -32,7 +32,7 @@ from app.features.authentication.users.infrastructure.persistence.sql_alchemist.
 from app.core.config.config import settings
 from app.features.shared.infrastructure.persistence.sql_alchemist.start.session import get_db
 
-router = APIRouter(prefix="/api/v1/users", tags=["users"])
+router = APIRouter(prefix="/api/v1/users", tags=["Users"])
 
 
 def get_user_repository(db=Depends(get_db)) -> UserRepository:

@@ -1,4 +1,6 @@
-﻿from sqlalchemy import select
+﻿from typing import List
+
+from sqlalchemy import select
 
 from app.features.education.careers.domain.models.career import Career
 from app.features.education.careers.domain.repositories.career_repository import CareerRepository
@@ -47,4 +49,14 @@ class CareerRepositoryImpl(CareerRepository):
         model = result.scalar_one_or_none()
         return self._to_domain(model) if model else None
 
+    async def find_by_university_id(self, university_id: str) -> list[Career]:
+        query = select(CareerModel).where(CareerModel.university_id == university_id)
+        result = await self.db.execute(query)
+        models = result.scalars().all()
+        return [self._to_domain(model) for model in models]
 
+    async def get_all_careers(self) -> list[Career]:
+        query = select(CareerModel)
+        result = await self.db.execute(query)
+        models = result.scalars().all()
+        return [self._to_domain(model) for model in models]

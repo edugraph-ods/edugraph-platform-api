@@ -25,7 +25,7 @@ from app.features.shared.infrastructure.persistence.sql_alchemist.start.session 
 
 bearer_scheme = HTTPBearer(description="Enter the JWT token using the format: Bearer <token>")
 
-router = APIRouter(prefix="/api/v1", tags=["authentication"])
+router = APIRouter(prefix="/api/v1", tags=["Authentication"])
 
 
 def get_auth_service() -> HashingService:
@@ -77,7 +77,7 @@ async def get_current_user(
     return user
 
 
-@router.post("/sign-up", status_code=status.HTTP_200_OK)
+@router.post("/sign-up", status_code=status.HTTP_200_OK, description="Sign up a new user")
 async def sign_up(
     request: SignUpRequest,
     user_repository: UserRepository = Depends(get_user_repository),
@@ -101,7 +101,7 @@ async def sign_up(
         )
 
 
-@router.post("/sign-in", response_model=AuthResponse)
+@router.post("/sign-in", response_model=AuthResponse, description="Sign in an existing user")
 async def sign_in(
     request: SignInRequest,
     user_repository: UserRepository = Depends(get_user_repository),
