@@ -1,5 +1,5 @@
 ﻿from fastapi import APIRouter, status
-from fastapi.params import Depends, Path
+from fastapi.params import Depends, Path, Query
 
 from app.features.education.courses.application.internal.inbound_services.use_cases.get_all_courses_by_career_id_use_case import \
     GetAllCoursesByCareerIdUseCase

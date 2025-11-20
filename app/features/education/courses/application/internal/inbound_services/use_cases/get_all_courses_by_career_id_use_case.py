@@ -16,7 +16,14 @@ class GetAllCoursesByCareerIdUseCase:
 
         grouped = {}
         for c in courses:
-            grouped.setdefault(c.cycle, []).append(c)
+            grouped.setdefault(c.cycle, []).append({
+                "id": c.id,
+                "name": c.name,
+                "code": c.code,
+                "cycle": c.cycle,
+                "credits": c.credits,
+                "prereqs": getattr(c, "prerequisites", []),
+            })
 
         wrapper = {
             "total_courses": len(courses),
