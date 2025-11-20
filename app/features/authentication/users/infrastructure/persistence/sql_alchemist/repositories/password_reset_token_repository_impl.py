@@ -4,7 +4,7 @@ from typing import Sequence
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.features.authentication.users.domain.models.password_reset_token import PasswordResetToken
+from app.features.authentication.users.domain.models.entities.password_reset_token import PasswordResetToken
 from app.features.authentication.users.domain.repositories.password_reset_token_repository import (
     PasswordResetTokenRepository,
 )

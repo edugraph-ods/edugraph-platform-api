@@ -1,6 +1,6 @@
 ﻿from abc import ABC, abstractmethod
 
-from app.features.authentication.students.domain.models.student import Student
+from app.features.authentication.students.domain.models.entities.student import Student
 
 
 class StudentRepository(ABC):

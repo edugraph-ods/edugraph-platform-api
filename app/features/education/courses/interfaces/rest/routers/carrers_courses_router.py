@@ -1,5 +1,5 @@
 ﻿from fastapi import APIRouter, status
-from fastapi.params import Depends, Path, Query
+from fastapi.params import Depends, Path
 
 from app.features.education.courses.application.internal.inbound_services.use_cases.get_all_courses_by_career_id_use_case import \
     GetAllCoursesByCareerIdUseCase
@@ -11,10 +11,13 @@ from app.features.shared.infrastructure.persistence.sql_alchemist.start.session 
 
 router = APIRouter(prefix="/api/v1/careers", tags=["Careers"])
 
+
 def get_course_repository(db=Depends(get_db)) -> CourseRepository:
     return CourseRepositoryImpl(db)
 
-@router.get("/{career_id}/courses", response_model=CoursesWrapperResponse, status_code=status.HTTP_200_OK, description="Get all courses by career id")
+
+@router.get("/{career_id}/courses", response_model=CoursesWrapperResponse, status_code=status.HTTP_200_OK,
+            description="Get all courses by career id")
 async def get_courses_by_career_id(
         career_id: str = Path(..., description="Career ID"),
         course_repository: CourseRepository = Depends(get_course_repository)

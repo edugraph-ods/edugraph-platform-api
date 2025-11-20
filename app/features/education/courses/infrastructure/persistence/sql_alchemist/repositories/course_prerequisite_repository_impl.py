@@ -1,6 +1,4 @@
-﻿from select import select
-
-from app.features.education.courses.domain.models.course_prerrequisite import CoursePrerequisite
+﻿from app.features.education.courses.domain.models.entities.course_prerrequisite import CoursePrerequisite
 from app.features.education.courses.domain.repositories.course_prerrequisite import CoursePrerequisiteRepository
 from app.features.education.courses.infrastructure.persistence.sql_alchemist.models.course_prerequisite_model import \
     CoursePrerequisiteModel

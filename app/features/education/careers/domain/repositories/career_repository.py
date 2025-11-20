@@ -1,6 +1,6 @@
 ﻿from abc import ABC, abstractmethod
 
-from app.features.education.careers.domain.models.career import Career
+from app.features.education.careers.domain.models.entities.career import Career
 from typing import List
 
 

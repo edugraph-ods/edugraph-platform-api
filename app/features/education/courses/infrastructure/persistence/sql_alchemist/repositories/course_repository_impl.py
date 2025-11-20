@@ -1,7 +1,7 @@
 ﻿from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
-from app.features.education.courses.domain.models.course import Course
+from app.features.education.courses.domain.models.entities.course import Course
 from app.features.education.courses.domain.repositories.course_repository import CourseRepository
 from app.features.education.courses.infrastructure.persistence.sql_alchemist.models.course_model import CourseModel
 
@@ -74,6 +74,15 @@ class CourseRepositoryImpl(CourseRepository):
             courses.append(course)
 
         return courses
+
+    async def find_by_id(self, course_id: str) -> Course | None:
+        result = await self.db.execute(
+            select(CourseModel)
+            .options(selectinload(CourseModel.prerequisites))
+            .where(CourseModel.id == course_id)
+        )
+        model = result.scalar_one_or_none()
+        return self._to_domain(model) if model else None
 
 
 

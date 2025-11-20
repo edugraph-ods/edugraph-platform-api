@@ -1,6 +1,6 @@
 ﻿from sqlalchemy import select
 
-from app.features.authentication.students.domain.models.student import Student
+from app.features.authentication.students.domain.models.entities.student import Student
 from app.features.authentication.students.domain.repositories.student_repository import StudentRepository
 from app.features.authentication.students.infrastructure.persistence.sql_alchemist.models.student_model import StudentModel
 

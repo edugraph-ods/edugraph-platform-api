@@ -1,6 +1,6 @@
 ﻿from abc import ABC, abstractmethod
 
-from app.features.education.courses.domain.models.course_prerrequisite import CoursePrerequisite
+from app.features.education.courses.domain.models.entities.course_prerrequisite import CoursePrerequisite
 
 class CoursePrerequisiteRepository(ABC):
 

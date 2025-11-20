@@ -1,5 +1,5 @@
 from sqlalchemy import select, update
-from app.features.authentication.users.domain.models.user import User
+from app.features.authentication.users.domain.models.entities.user import User
 from app.features.authentication.users.domain.repositories.user_repository import UserRepository
 from app.features.authentication.users.infrastructure.persistence.sql_alchemist.models.user_model import UserModel
 from datetime import datetime
