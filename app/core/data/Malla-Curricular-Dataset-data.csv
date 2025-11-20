@@ -1,0 +1,161 @@
+Universidad ,Programa,Carrera,Ciclo,Nombre del curso,codigo,creditos,Prerequisitos
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,1,Comprensión y Producción de Lenguaje I,HU625,4,HU624
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,1,Creatividad y Liderazgo (Ing),HU612,3,
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,1,Ética y Ciudadanía,HU548,2,HU624
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,1,Matemática Básica,MA420,6,MA638
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,1,Fundamentos en Programación,CC200,6,MA638
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,2,Cálculo I,MA262,6,MA420
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,2,Comprensión y Producción de Lenguaje II,HU626,4,HU625
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,2,Seminario de Investigación Académica I,HU159,2,HU625
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,2,Organización y Dirección de Empresas,AD99,4,
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,2,Programación Orientado a Objetos,CC201,5,CC200
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,3,Física I,MA466,4,"MA262, MA652"
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,3,Arquitectura de Computadoras y Sistemas Operativos,SI643,5,MA262
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,3,Diseño De Base De Datos,SI400,4,CC201
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,3,Fundamentos en Ciberseguridad,CB00,4,CC201
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,3,Matemática Discreta,MA265,6,"MA420, CC200"
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,4,Estadística Aplicada I,MA642,4,MA262
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,4,Física II,MA462,6,MA466
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,4,Hacking Ético,CB01,3,CB00
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,4,Matemática Computacional,MA475,4,MA262
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,4,Redes y Comunicaciones de Datos,SI640,4,SI643
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,5,Arquitectura de Aplicaciones,CB02,4,CB00
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,5,Cálculo II,MA263,6,MA262
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,5,Criptografía,CB03,4,"MA265, MA475"
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,5,Finanzas e Ingeniería Económica,SI642,4,AD99
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,6,Arquitectura de Ciberseguridad,CB06,4,SI640
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,6,Ciberseguridad en Entornos Industriales y Cloud,CB07,4,CB01
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,6,Procesos de Ciberseguridad,CB05,5,CB01
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,6,Seguridad de Integración de Aplicaciones,CB04,4,"CB02, CB01"
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,7,Análisis Forense,CB10,4,CB03
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,7,Gerencia de Proyectos de SI/TI,SI427,4,CB05
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,7,Gestión de Incidentes de Ciberseguridad,CB09,5,CB01
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,7,Transformación Empresarial en la Era Digital,CB08,3,SI642
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,8,Estrategia de Ciberseguridad,CB13,4,"CB05, CB08"
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,8,Regulación y Marcos de Trabajo,CB11,4,CB05
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,8,Taller de Desempeño Profesional,SI639,4,"CB05, MA642, HU61"
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,8,Taller de Investigación Académica,CB12,3,"HU159,"
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,9,Gobierno de Ciberseguridad y Cumplimiento,CB14,4,CB13
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,9,Taller de Proyecto I,SI644,5,"SI427, SI639, CB12"
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,10,Gestión de Tecnologías de Información,SI710,4,CB11
+Universidad Peruana de Ciencias Aplicadas (UPC),PREGRADO,INGENIERÍA DE CIBERSEGURIDAD  ,10,Taller de Proyecto II,SI646,5,SI644
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,1,DESARROLLO DEL TALENTO,RRHH2503,2,
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,1,COMPLEMENTO MATEMÁTICO APLICADO,MATH2502,5,
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,1,INTRODUCCIÓN A LA INGENIERÍA AGROINDUSTRIAL,AGRO1101A,2,
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,1,QUÍMICA 1,QUIM1105,4,
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,1,CIUDADANÍA GLOBAL,HUMA2506,2,
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,1,COMUNICACIÓN 1,LENG2501,5,
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,2,MATEMÁTICA BÁSICA APLICADA,MATH2504,5,MATH2502
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,2,BIOQUÍMICA AGROINDUSTRIAL,QUIM1204,3,QUIM1105
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,2,BIOLOGÍA GENERAL,BIOL1103,3,
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,2,HERRAMIENTAS INFORMÁTICAS,INFO1120A,2,
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,2,COMUNICACIÓN 2,LENG2502,5,LENG2501
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,2,PRE BEGINNER 1,IDIO1401,1,
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,3,CÁLCULO 1,MATH2507,5,MATH2504
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,3,MICROBIOLOGÍA AGROINDUSTRIAL,BIOL1206A,3,QUIM1204
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,3,FÍSICA 1,FISI1207,4,MATH2504
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,3,GESTIÓN DE BASE DE DATOS,ISOF1202A,3,
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,3,COMUNICACIÓN 3,LENG2503,5,LENG2502
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,3,PRE BEGINNER 2,IDIO1402,1,IDIO1401
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,4,CÁLCULO 2,MATH2508,5,MATH2507
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,4,GESTIÓN DE COSTOS,FINN1313,3,AGRO1101A
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,4,TERMODINÁMICA,CIAP1306,3,FISI1207
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,4,METODOLOGÍA UNIVERSITARIA,INVE2506,3,
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,4,RESPONSABILIDAD SOCIAL,HUMA2505,2,
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,4,PROBABILIDAD Y ESTADÍSTICA,STAT2501,5,MATH2504
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,5,GERENCIA DE MARKETING,MARK1203B,4,
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,5,HERRAMIENTAS ESTADÍSTICAS PARA LA INVESTIGACIÓN,STAT1205,3,STAT2501
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,5,INGENIERÍA Y TECNOLOGÍA DEL FRÍO,AGRO1401,3,CIAP1306
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,5,TECNOLOGÍA AGROINDUSTRIAL 1,AGRO1301A,4,BIOL1206A
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,5,METODOLOGÍA DE LA INVESTIGACIÓN,INVE2505,3,INVE2506
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,5,EMPLEABILIDAD,RRHH2504,4,RRHH2503
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,6,PROYECTO SOCIAL 1,HUMA1406,0,HUMA2505
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,6,OPERACIONES UNITARIAS AGROINDUSTRIALES 1,AGRO1311,5,CIAP1306
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,6,INGENIERÍA DE PRODUCTOS Y PROCESOS,OPER2504,4,MARK1203B
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,6,TECNOLOGÍAS DE INFORMACIÓN APLICADAS A LOS NEGOCIOS,INFO1308B,3,"ISOF1202A, 80 CRÉDITOS APROBADOS"
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,6,TECNOLOGÍA AGROINDUSTRIAL 2,AGRO1302,5,AGRO1301A
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,7,INVESTIGACIÓN DE OPERACIONES,OPER1405R,5,MATH2508
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,7,INNOVACIÓN Y EMPRENDIMIENTO,EMPR2503,3,MARK1203B
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,7,OPERACIONES UNITARIAS AGROINDUSTRIALES 2,AGRO1412,5,AGRO1311
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,7,GERENCIA DE LA CADENA DE SUMINISTROS,SUPP1405A,4,AGRO1302
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,7,GESTIÓN TÁCTICA DE OPERACIONES,OPER2506,5,INFO1308B
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,8,BIOINGENIERÍA Y BIOTECNOLOGÍA AGROINDUSTRIAL,AGRO1402B,4,AGRO1412
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,8,GESTIÓN DE LA CALIDAD,MAGM2510,3,AGRO1302
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,8,GESTIÓN DE LA INOCUIDAD AGROINDUSTRIAL,AGRO2501,4,SUPP1405A
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,8,PRÁCTICAS PREPROFESIONALES,INVE2510,8,"RRHH2504, SUPP1405A"
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,9,FORMULACIÓN Y EVALUACIÓN DE PROYECTOS,FINN2504,3,AGRO2501
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,9,SISTEMAS INTEGRADOS DE GESTIÓN,MAGM2518,5,AGRO2501
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,9,TESIS,INVE2528,8,"INVE2505, AGRO1402B"
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,10,TRABAJO DE INVESTIGACIÓN,TIIN2504,8,INVE2528
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,10,E-BUSINESS Y NEGOCIOS INTERNACIONALES,COME2502,3,MAGM2518
+Universidad Privada del Norte (UPN),PREGRADO, INGENIERÍA AGROINDUSTRIAL,10,DISEÑO DE PLANTAS AGROINDUSTRIALES,AGRO1501A,6,"AGRO1402B, FINN2504"
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,1,Química General,CG-101,3,Ninguno
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,1,Laboratorio de Química General,CG-102,3,CG-101
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,1,Comprensión y Redacción de Textos 1,HU-101,4,Ninguno
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,1,Individuo y Medio Ambiente,HU-102,2,Ninguno
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,1,Matemática 1,MA-101,3,Ninguno
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,1,Introducción a la Vida Universitaria,GE-101,2,Ninguno
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,1,Inglés 1,IN-101,3,Ninguno
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,2,Matemática 2,MA-201,4,MA-101
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,2,Comprensión y Redacción de Textos 2,HU-201,4,HU-101
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,2,Química Inorgánica,CG-201,2,CG-101
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,2,Laboratorio de Química Inorgánica,CG-202,5,CG-201
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,2,Estadística Descriptiva y Probabilidades,ES-201,3,MA-201
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,2,Inglés 2,IN-201,3,IN-101
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,2,Herramientas para la Comunicación Efectiva,HU-202,3,Ninguno
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,3,Cálculo 1,MA-301,4,MA-201
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,3,Principios de Algoritmos,AL-301,2,Ninguno
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,3,Dibujo para Ingenieria,DI-301,3,Ninguno
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,3,Mecánica Clásica,FI-301,4,MA-201
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,3,Laboratorio de Mecánica Clásica,FI-302,2,FI-301
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,3,Inglés 3,IN-301,3,IN-201
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,3,Investigación Académica,AC-301,4,Ninguno
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,4,Cálculo 2,MA-401,2,MA-301
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,4,Procesos para Ingeniería,PP-401,2,Ninguno
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,4,Dibujo CAD,DI-401,2,DI-301
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,4,Fundamentos de Electromagnetismo,FI-401,4,"MA-301, FI-301"
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,4,Laboratorio de Fundamentos de Electromagnetismo,FI-402,2,FI-401
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,4,Estática,FI-403,4,FI-301
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,4,Inglés 4,IN-401,3,IN-301
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,4,Estadística Inferencial,ES-401,4,ES-201
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,5,Fluidos y Termodinámica,FI-501,5,"MA-401, FI-403"
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,5,Laboratorio de Fluidos y Termodinámica,FI-502,2,FI-501
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,5,Cálculo Avanzado para Ingeniería,MA-501,4,MA-401
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,5,Dinámica,FI-503,4,FI-403
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,5,Análisis de Circuitos Eléctricos,EL-501,4,FI-401
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,5,Ciencia de los Materiales,AE-501,4,CG-201
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,5,Dibujo Mecánico,DI-501,3,DI-401
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,5,Herramientas Informáticas para la Toma de Decisiones,HI-501,2,Ninguno
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,5,Formación para la Investigación - Mecánica,AC-501,4,AC-301
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,6,Mecánica y Resistencia de Materiales,AE-601,3,FI-403
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,6,Mecánica de Fluidos,FI-601,4,FI-501
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,6,Termodinámica,FI-602,4,FI-501
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,6,Fundamentos de Aeronaves y Vehiculos no Tripulados,AE-602,3,AE-501
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,6,Elasticidad y Resistencia de Materiales,AE-603,3,AE-601
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,6,Curso Integrador 1 - Escuela de Mecánica,CI-601,4,MA-501
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,6,Métodos Numéricos,MA-601,3,MA-501
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,7,Aerodinámica,AE-701,4,"FI-601, FI-602"
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,7,Estructuras Aerodinámicas,AE-702,4,AE-603
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,7,Motores Alternativos de Aviación,AE-703,3,FI-602
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,7,Transferencia de Calor y Masa,AE-704,3,FI-602
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,7,Elementos de Máquinas y Fundamentos de Diseño,AE-705,4,FI-503
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,7,Procesos de Manufactura 1,AE-706,3,AE-501
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,8,Confiabilidad y Diagnóstico de Aeronaves,AE-801,3,ES-401
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,8,Mecánica de Vuelo,AE-802,3,AE-701
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,8,Motores de Reacción y Turbinas de Gas,AE-803,3,AE-704
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,8,Mantenimiento de Aeronaves y Motores,AE-804,3,AE-703
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,8,Procesos de Manufactura 2,AE-805,3,AE-706
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,8,Problemas y Desafíos en el Perú Actual,HU-801,3,HU-201
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,8,Formación para la Empleabilidad,FE-801,3,Ninguno
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,8,Ética profesional,ET-801,2,Ninguno
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,9,Cálculo de Aviones,AE-901,4,"MA-601, AE-701"
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,9,Planificación y Diseño de Aeropuertos,AE-902,3,AE-701
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,9,Seguridad Operacional y SMS,AE-903,3,AE-804
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,9,"Instalaciones Hidráulicas, Neumáticas y Térmicas",AE-904,3,AE-704
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,9,Helicópteros,AE-905,3,AE-802
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,9,Formación para la Investigación - Mecánica,AC-901,4,AC-501
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,10,Automática y Control de Aeronaves,AE-1001,4,"AE-802, EL-501"
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,10,Derecho Aeronáutico,AE-1002,3,Ninguno
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,10,Sistema de Navegación y Aviónica,AE-1003,4,EL-501
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,10,Taller de Investigación - Mecánica,AC-1001,4,AC-901
+Universidad Tecnológica del Perú (UTP),PREGRADO,INGENIERIA AERONAUTICA,10,Curso Integrador 2- Aeronáutica,CI-1001,3,CI-601

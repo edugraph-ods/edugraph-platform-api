@@ -1,3 +1,5 @@
+from typing import List
+
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
@@ -24,6 +26,9 @@ class Settings(BaseSettings):
     smtp_username: str = "edugraphplatform@gmail.com"
     smtp_password: str = "zpujothfkelldojz"
     smtp_sender: str | None = None
+
+    # CORS ORIGINS
+    backend_cors_origins: List[str] = ["http://localhost:3000"]
     
     class Config:
         env_file = ".env"
