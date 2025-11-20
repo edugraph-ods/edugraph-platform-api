@@ -1,4 +1,5 @@
 ﻿from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 
 from app.features.education.courses.domain.models.course import Course
 from app.features.education.courses.domain.repositories.course_repository import CourseRepository
@@ -18,6 +19,7 @@ class CourseRepositoryImpl(CourseRepository):
             credits=model.credits,
             cycle=model.cycle,
             career_id=model.career_id,
+            prerequisites=model.prerequisites,
         )
 
     async def save(self, course: Course) -> Course:
@@ -56,9 +58,22 @@ class CourseRepositoryImpl(CourseRepository):
         return self._to_domain(model)
 
     async def find_by_career_id(self, career_id: str) -> list[Course]:
-        query = select(CourseModel).where(CourseModel.career_id == career_id)
+        query = (
+            select(CourseModel)
+            .where(CourseModel.career_id == career_id)
+            .options(selectinload(CourseModel.prerequisites))
+        )
 
         result = await self.db.execute(query)
         models = result.scalars().all()
-        return [self._to_domain(model) for model in models]
+
+        courses = []
+        for model in models:
+            course = self._to_domain(model)
+            course.prerequisites = [p.prerequisite.id for p in getattr(model, "prerequisites", [])]
+            courses.append(course)
+
+        return courses
+
+
 
