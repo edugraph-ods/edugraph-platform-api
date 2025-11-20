@@ -1,9 +1,13 @@
-﻿from sqlalchemy import select
+﻿from typing import Any, Coroutine
+
+from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from app.features.education.courses.domain.models.entities.course import Course
 from app.features.education.courses.domain.repositories.course_repository import CourseRepository
 from app.features.education.courses.infrastructure.persistence.sql_alchemist.models.course_model import CourseModel
+from app.features.education.courses.infrastructure.persistence.sql_alchemist.models.course_prerequisite_model import \
+    CoursePrerequisiteModel
 
 
 class CourseRepositoryImpl(CourseRepository):
@@ -75,14 +79,23 @@ class CourseRepositoryImpl(CourseRepository):
 
         return courses
 
-    async def find_by_id(self, course_id: str) -> Course | None:
+    async def find_by_id(self, course_id: str) -> tuple[Course, list[Any]] | None:
         result = await self.db.execute(
             select(CourseModel)
-            .options(selectinload(CourseModel.prerequisites))
+            .options(
+                selectinload(CourseModel.prerequisites)
+                .selectinload(CoursePrerequisiteModel.prerequisite)
+            )
             .where(CourseModel.id == course_id)
         )
         model = result.scalar_one_or_none()
-        return self._to_domain(model) if model else None
+        if not model:
+            return None
+
+        course = self._to_domain(model)
+        prerequisites_names = [p.prerequisite.name for p in getattr(model, "prerequisites", [])]
+
+        return course, prerequisites_names
 
 
 

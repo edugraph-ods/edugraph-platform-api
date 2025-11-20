@@ -1,6 +1,4 @@
-﻿from http.client import HTTPException
-
-from fastapi import APIRouter
+﻿from fastapi import APIRouter, HTTPException
 from fastapi.params import Depends
 
 from app.features.education.academic_progress.application.internal.inbound_services.use_cases.academic_progress_use_case import \
@@ -63,4 +61,12 @@ async def calculate_academic_progress(
 
     service.update_course_availability()
 
-    return AcademicProgressResponse(cycles_needed_to_graduate=min_cycles)
+    months_per_cycle = 4
+    total_months = min_cycles * months_per_cycle
+    years = round(total_months / 12, 2)
+
+    return AcademicProgressResponse(
+        cycles_needed_to_graduate=min_cycles,
+        months_needed_to_graduate=total_months,
+        years_needed_to_graduate=years,
+    )
