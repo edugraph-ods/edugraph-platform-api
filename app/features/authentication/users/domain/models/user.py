@@ -53,3 +53,11 @@ class User:
         return cls(
             email=email,
         )
+
+    def extrac_university_acronym_from_email(self: str) -> str:
+        try:
+            domain = self.split("@")[1]  # 'upc.edu.pe'
+            acronym = domain.split(".")[0]  # 'upc'
+            return acronym.upper()  # Base de datos guarda en mayúsculas
+        except IndexError:
+            raise ValueError(f"Invalid email format: {self}")

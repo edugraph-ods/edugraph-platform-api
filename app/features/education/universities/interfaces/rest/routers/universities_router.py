@@ -14,7 +14,7 @@ router = APIRouter(prefix="/api/v1/universities", tags=["university"])
 def get_university_repository(db=Depends(get_db)) -> UniversityRepository:
     return UniversityRepositoryImpl(db)
 
-@router.get("/", response_model=list[UniversityResponse], status_code=status.HTTP_200_OK)
+@router.get("", response_model=list[UniversityResponse], status_code=status.HTTP_200_OK)
 async def get_universities(
     repo: UniversityRepository = Depends(get_university_repository)
 ):
