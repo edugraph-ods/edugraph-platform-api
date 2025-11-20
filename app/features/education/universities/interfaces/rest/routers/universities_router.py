@@ -9,13 +9,13 @@ from app.features.education.universities.infrastructure.persistence.sql_alchemis
 from app.features.education.universities.interfaces.rest.schemas.universities_response import UniversityResponse
 from app.features.shared.infrastructure.persistence.sql_alchemist.start.session import get_db
 
-router = APIRouter(prefix="/api/v1/universities", tags=["university"])
+router = APIRouter(prefix="/api/v1/universities", tags=["Universities"])
 
 def get_university_repository(db=Depends(get_db)) -> UniversityRepository:
     return UniversityRepositoryImpl(db)
 
-@router.get("", response_model=list[UniversityResponse], status_code=status.HTTP_200_OK)
-async def get_universities(
+@router.get("", response_model=list[UniversityResponse], status_code=status.HTTP_200_OK, description="Get all universities")
+async def get_all_universities(
     repo: UniversityRepository = Depends(get_university_repository)
 ):
     use_case = GetAllUniversitiesUseCase(repo)

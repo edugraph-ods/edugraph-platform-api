@@ -28,4 +28,5 @@ class GetStudentProfileUseCase:
             "name": student.name,
             "email": user.email,
             "university": university.name,
+            "university_id": university.id,
         }
