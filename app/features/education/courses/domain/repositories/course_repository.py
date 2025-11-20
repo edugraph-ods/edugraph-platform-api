@@ -19,3 +19,7 @@ class CourseRepository(ABC):
     @abstractmethod
     async def find_by_career_id(self, career_id: str) -> list[Course]:
         pass
+
+    @abstractmethod
+    async def find_by_id(self, course_id: str) -> Course | None:
+        pass

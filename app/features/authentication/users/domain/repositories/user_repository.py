@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from app.features.authentication.users.domain.models.user import User
+from app.features.authentication.users.domain.models.entities.user import User
 
 class UserRepository(ABC):
     """

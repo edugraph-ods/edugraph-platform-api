@@ -1,4 +1,4 @@
-﻿from app.features.education.universities.domain.models.university import University
+﻿from app.features.education.universities.domain.models.entities.university import University
 from app.features.education.universities.domain.repositories.university_repository import UniversityRepository
 
 class GetUniversityByAcronymUseCase:

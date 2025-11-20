@@ -75,5 +75,14 @@ class CourseRepositoryImpl(CourseRepository):
 
         return courses
 
+    async def find_by_id(self, course_id: str) -> Course | None:
+        result = await self.db.execute(
+            select(CourseModel)
+            .options(selectinload(CourseModel.prerequisites))
+            .where(CourseModel.id == course_id)
+        )
+        model = result.scalar_one_or_none()
+        return self._to_domain(model) if model else None
+
 
 

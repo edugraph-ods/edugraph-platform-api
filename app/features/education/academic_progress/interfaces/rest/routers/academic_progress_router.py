@@ -26,7 +26,7 @@ def get_course_repository(db=Depends(get_db)) -> CourseRepository:
     return CourseRepositoryImpl(db)
 
 @router.post("/{career_id}/progress", response_model=AcademicProgressResponse)
-async def calcular_progreso(
+async def calculate_academic_progress(
         career_id: str,
         request: AcademicProgressRequest,
         repository: CourseRepository = Depends(get_course_repository)

@@ -1,6 +1,6 @@
 from app.features.authentication.users.application.internal.outbound_services.hashing_service.hashing_service import \
     HashingService
-from app.features.authentication.users.domain.models.user import User
+from app.features.authentication.users.domain.models.entities.user import User
 from app.features.authentication.students.domain.repositories.student_repository import StudentRepository
 from app.features.authentication.users.domain.repositories.user_repository import UserRepository
 from app.features.education.universities.domain.repositories.university_repository import UniversityRepository

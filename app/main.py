@@ -49,6 +49,9 @@ from app.features.education.careers.interfaces.rest.routers.careers_router impor
 from app.features.education.courses.interfaces.rest.routers.carrers_courses_router import (
     router as careers_courses_router,
 )
+from app.features.education.courses.interfaces.rest.routers.course_router import (
+    router as course_router,
+)
 from app.features.education.academic_progress.interfaces.rest.routers.academic_progress_router import (
     router as academic_progress_router,
 )
@@ -175,6 +178,7 @@ app.include_router(universities_router)
 app.include_router(universities_careers_router)
 app.include_router(careers_router)
 app.include_router(careers_courses_router)
+app.include_router(course_router)
 app.include_router(academic_progress_router)
 
 
