@@ -25,7 +25,7 @@ from app.features.shared.infrastructure.persistence.sql_alchemist.start.session 
 
 bearer_scheme = HTTPBearer(description="Enter the JWT token using the format: Bearer <token>")
 
-router = APIRouter(prefix="/api/v1", tags=["authentication"])
+router = APIRouter(prefix="/api/v1", tags=["Authentication"])
 
 
 def get_auth_service() -> HashingService:
