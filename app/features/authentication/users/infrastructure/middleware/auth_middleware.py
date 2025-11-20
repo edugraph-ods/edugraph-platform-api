@@ -34,6 +34,9 @@ class AuthMiddleware(BaseHTTPMiddleware):
         return any(path.startswith(prefix) for prefix in self.public_prefixes)
 
     async def dispatch(self, request: Request, call_next: Callable):
+        if request.method == "OPTIONS":
+            return await call_next(request)
+
         path = request.url.path
         # Debugging output: show path and configured public paths/prefixes
         try:
