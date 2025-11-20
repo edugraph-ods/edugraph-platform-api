@@ -10,6 +10,8 @@ import app.features.authentication.students.infrastructure.persistence.sql_alche
 import app.features.education.universities.infrastructure.persistence.sql_alchemist.models.university_model
 from app.features.education.careers.infrastructure.persistence.sql_alchemist.repositories.career_repository_impl import \
     CareerRepositoryImpl
+from app.features.education.courses.infrastructure.persistence.sql_alchemist.repositories.course_prerequisite_repository_impl import \
+    CoursePrerequisiteRepositoryImpl
 from app.features.education.courses.infrastructure.persistence.sql_alchemist.repositories.course_repository_impl import \
     CourseRepositoryImpl
 
@@ -49,6 +51,7 @@ from app.features.authentication.users.infrastructure.middleware.auth_middleware
 )
 
 from app.core.config.config import settings
+from app.features.shared.infrastructure.seed.csv.course_prerrequisite_seeder import CoursePrerequisiteSeeder
 from app.features.shared.infrastructure.seed.csv.seed_careers import CareerSeeder
 from app.features.shared.infrastructure.seed.csv.seed_courses import CourseSeeder
 from app.features.shared.infrastructure.seed.csv.seed_universities import UniversitySeeder
@@ -74,6 +77,7 @@ async def lifespan(app: FastAPI):
         university_repo = UniversityRepositoryImpl(session)
         career_repo = CareerRepositoryImpl(session)
         course_repo = CourseRepositoryImpl(session)
+        course_prereq_repo = CoursePrerequisiteRepositoryImpl(session)
 
         uni_count = await university_repo.count()
         if uni_count == 0:
@@ -82,15 +86,22 @@ async def lifespan(app: FastAPI):
             # Seed universities
             uni_seeder = UniversitySeeder(session, university_repo)
             await uni_seeder.seed(csv_path)
+            print(">>> Universities seeded successfully.")
 
             # Seed careers
             career_seeder = CareerSeeder(session, career_repo, university_repo)
             await career_seeder.seed(csv_path)
+            print(">>> Careers seeded successfully.")
 
             # Seed courses
             course_seeder = CourseSeeder(session, course_repo, career_repo)
             await course_seeder.seed(csv_path)
             print(">>> Courses seeded successfully.")
+
+            # Seed course prerequisite
+            course_prereq_seeder = CoursePrerequisiteSeeder(session, course_repo, course_prereq_repo)
+            await course_prereq_seeder.seed(csv_path)
+            print(">>> Course prerequisites seeded successfully.")
 
     yield
 

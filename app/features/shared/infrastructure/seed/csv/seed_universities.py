@@ -24,7 +24,5 @@ class UniversitySeeder:
             try:
                 await use_case.execute(name=name, acronym=acronym)
             except ValueError:
-                # Universidad ya existe → ignorar
+                print(f"University already exists: {name}")
                 pass
-
-        print(">>> Universities seeded successfully.")

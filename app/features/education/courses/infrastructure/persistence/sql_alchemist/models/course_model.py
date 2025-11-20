@@ -16,3 +16,9 @@ class CourseModel(Base):
     career_id = Column(String(36), ForeignKey("careers.id"), nullable=False)
 
     career = relationship("CareerModel", back_populates="courses")
+    prerequisites = relationship(
+        "CoursePrerequisiteModel",
+        back_populates="course",
+        cascade="all, delete-orphan",
+        foreign_keys="CoursePrerequisiteModel.course_id"
+    )

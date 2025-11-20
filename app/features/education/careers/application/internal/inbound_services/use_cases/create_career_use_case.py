@@ -10,7 +10,7 @@ class CreateCareerUseCase:
 
     async def execute(self, name: str, program: str, university_id: str) -> Career:
 
-        existing = await self.repository.find_by_name(name)
+        existing = await self.repository.find_by_university_and_name(university_id, name)
         if existing:
             raise ValueError("Career already exists")
 

@@ -45,5 +45,6 @@ class CourseSeeder:
                     cycle=course_entity.cycle,
                     career_id=course_entity.career_id
                 )
+
             except ValueError as e:
                 print(f"Error creating course '{name}': {e}")

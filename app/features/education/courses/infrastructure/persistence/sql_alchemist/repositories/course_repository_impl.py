@@ -2,7 +2,7 @@
 
 from app.features.education.courses.domain.models.course import Course
 from app.features.education.courses.domain.repositories.course_repository import CourseRepository
-from app.features.education.courses.infrastructure.persistence.sql_alchemist.models.course_repository import CourseModel
+from app.features.education.courses.infrastructure.persistence.sql_alchemist.models.course_model import CourseModel
 
 
 class CourseRepositoryImpl(CourseRepository):
@@ -35,6 +35,17 @@ class CourseRepositoryImpl(CourseRepository):
 
     async def find_by_name(self, name: str) -> Course | None:
         query = select(CourseModel).where(CourseModel.name == name)
+
+        result = await self.db.execute(query)
+        model = result.scalar_one_or_none()
+
+        if model is None:
+            return None
+
+        return self._to_domain(model)
+
+    async def find_by_code(self, code: str) -> Course | None:
+        query = select(CourseModel).where(CourseModel.code == code)
 
         result = await self.db.execute(query)
         model = result.scalar_one_or_none()
