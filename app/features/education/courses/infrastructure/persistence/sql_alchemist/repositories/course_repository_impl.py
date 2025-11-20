@@ -55,3 +55,10 @@ class CourseRepositoryImpl(CourseRepository):
 
         return self._to_domain(model)
 
+    async def find_by_career_id(self, career_id: str) -> list[Course]:
+        query = select(CourseModel).where(CourseModel.career_id == career_id)
+
+        result = await self.db.execute(query)
+        models = result.scalars().all()
+        return [self._to_domain(model) for model in models]
+
