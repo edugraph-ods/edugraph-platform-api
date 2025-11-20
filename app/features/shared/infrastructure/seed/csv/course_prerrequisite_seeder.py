@@ -1,13 +1,6 @@
-﻿
-from uuid import uuid4
+﻿from uuid import uuid4
 
-from app.features.education.courses.domain.models.course_prerrequisite import CoursePrerequisite
-from app.features.education.courses.infrastructure.loaders.csv.course_csv_loader import CourseCSVLoader
-
-
-from uuid import uuid4
-
-from app.features.education.courses.domain.models.course_prerrequisite import CoursePrerequisite
+from app.features.education.courses.domain.models.entities.course_prerrequisite import CoursePrerequisite
 from app.features.education.courses.infrastructure.loaders.csv.course_csv_loader import CourseCSVLoader
 
 

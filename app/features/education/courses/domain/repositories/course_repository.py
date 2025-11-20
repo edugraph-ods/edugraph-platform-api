@@ -1,6 +1,6 @@
 ﻿from abc import ABC, abstractmethod
 
-from app.features.education.courses.domain.models.course import Course
+from app.features.education.courses.domain.models.entities.course import Course
 
 class CourseRepository(ABC):
 

@@ -1,7 +1,7 @@
 ﻿from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
-from app.features.education.courses.domain.models.course import Course
+from app.features.education.courses.domain.models.entities.course import Course
 from app.features.education.courses.domain.repositories.course_repository import CourseRepository
 from app.features.education.courses.infrastructure.persistence.sql_alchemist.models.course_model import CourseModel
 

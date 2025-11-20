@@ -1,9 +1,7 @@
 ﻿import uuid
 from dataclasses import dataclass, field
-from typing import List
 
-from app.features.education.courses.domain.value_objects.course_status import CourseStatus
-from app.features.education.courses.domain.value_objects.prerequisite import Prerequisites
+from app.features.education.academic_progress.domain.models.value_objects.prerequisite import Prerequisites
 
 
 def _generate_object_id() -> str:
@@ -16,7 +14,7 @@ class Course:
     credits: int
     cycle: int
     career_id: str
-    prerequisites: Prerequisites
+    prerequisites: Prerequisites = field(default_factory=lambda: Prerequisites([]))
 
     id: str = field(default_factory=_generate_object_id)
 
@@ -29,3 +27,5 @@ class Course:
             cycle=cycle,
             career_id=career_id,
         )
+    def is_available(self, approved_courses: set):
+        return self.prerequisites.all_met(approved_courses)
