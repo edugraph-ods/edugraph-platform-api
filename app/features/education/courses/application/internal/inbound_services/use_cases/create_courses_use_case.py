@@ -11,7 +11,8 @@ class CreateCourseUseCase:
                       credits: int,
                       cycle: int,
                       career_id: str):
-        existing = await self.repository.find_by_name(name)
+
+        existing = await self.repository.find_by_code(name)
         if existing:
             raise ValueError("Course already exists")
 

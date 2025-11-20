@@ -29,14 +29,22 @@ class CareerRepositoryImpl(CareerRepository):
         await self.db.commit()
         return career
 
-    async def find_by_name(self, name: str) -> Career | None:
-        query = select(CareerModel).where(CareerModel.name == name)
+    async def find_by_university_and_name(self, university_id: str, name: str) -> Career | None:
+        query = (
+            select(CareerModel)
+            .where(CareerModel.university_id == university_id)
+            .where(CareerModel.name == name)
+        )
 
         result = await self.db.execute(query)
         model = result.scalar_one_or_none()
 
-        if model is None:
-            return None
+        return self._to_domain(model) if model else None
 
-        return self._to_domain(model)
+    async def find_by_name(self, name: str) -> Career | None:
+        query = select(CareerModel).where(CareerModel.name == name)
+        result = await self.db.execute(query)
+        model = result.scalar_one_or_none()
+        return self._to_domain(model) if model else None
+
 

@@ -24,9 +24,6 @@ class CareerSeeder:
             name, acronym = UniversityCSVLoader.parse(university_raw)
 
             university = await self.university_repo.find_by_name(name)
-            if not university:
-                print(f"University not found: {name}")
-                continue
 
             career_entity = Career.create(
                 name=career_name,
@@ -40,5 +37,6 @@ class CareerSeeder:
                     program=career_entity.program,
                     university_id=career_entity.university_id
                 )
+
             except ValueError as e:
                 print(f"Error creating career '{career_name}': {e}")

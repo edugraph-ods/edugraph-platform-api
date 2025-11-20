@@ -1,9 +1,9 @@
 ﻿import uuid
 from dataclasses import dataclass, field
 
-
 def _generate_object_id() -> str:
     return uuid.uuid4().hex[:24]
+
 @dataclass
 class Course:
     name: str

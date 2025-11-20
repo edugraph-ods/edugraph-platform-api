@@ -10,5 +10,9 @@ class CareerRepository(ABC):
         pass
 
     @abstractmethod
+    async def find_by_university_and_name(self, university_id: str, name: str) -> Career | None:
+        pass
+
+    @abstractmethod
     async def find_by_name(self, name: str) -> Career | None:
         pass
