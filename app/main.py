@@ -115,14 +115,6 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.backend_cors_origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 token_service = TokenServiceImpl(
     secret_key=settings.secret_key,
     algorithm=settings.algorithm,
@@ -140,6 +132,14 @@ app.add_middleware(
         "/api/v1/users/reset-password",
     },
     public_prefixes=(),
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.backend_cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 def custom_openapi():
