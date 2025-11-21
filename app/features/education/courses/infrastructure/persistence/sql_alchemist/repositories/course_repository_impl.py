@@ -8,12 +8,14 @@ from app.features.education.courses.domain.repositories.course_repository import
 from app.features.education.courses.infrastructure.persistence.sql_alchemist.models.course_model import CourseModel
 from app.features.education.courses.infrastructure.persistence.sql_alchemist.models.course_prerequisite_model import \
     CoursePrerequisiteModel
+from app.features.shared.infrastructure.persistence.sql_alchemist.repositories.base_repository import BaseRepository
 
 
-class CourseRepositoryImpl(CourseRepository):
+class CourseRepositoryImpl(CourseRepository, BaseRepository):
 
     def __init__(self, db_session):
-        self.db = db_session
+        BaseRepository.__init__(self, db_session, CourseRepository)
+        self.session = db_session
 
     def _to_domain(self, model) -> Course:
         return Course(
@@ -35,14 +37,13 @@ class CourseRepositoryImpl(CourseRepository):
             cycle=course.cycle,
             career_id=course.career_id,
         )
-        self.db.add(model)
-        await self.db.commit()
+        await self.create(model)
         return course
 
     async def find_by_name(self, name: str) -> Course | None:
         query = select(CourseModel).where(CourseModel.name == name)
 
-        result = await self.db.execute(query)
+        result = await self.session.execute(query)
         model = result.scalar_one_or_none()
 
         if model is None:
@@ -53,7 +54,7 @@ class CourseRepositoryImpl(CourseRepository):
     async def find_by_code(self, code: str) -> Course | None:
         query = select(CourseModel).where(CourseModel.code == code)
 
-        result = await self.db.execute(query)
+        result = await self.session.execute(query)
         model = result.scalar_one_or_none()
 
         if model is None:
@@ -68,7 +69,7 @@ class CourseRepositoryImpl(CourseRepository):
             .options(selectinload(CourseModel.prerequisites))
         )
 
-        result = await self.db.execute(query)
+        result = await self.session.execute(query)
         models = result.scalars().all()
 
         courses = []
@@ -79,8 +80,8 @@ class CourseRepositoryImpl(CourseRepository):
 
         return courses
 
-    async def find_by_id(self, course_id: str) -> tuple[Course, list[Any]] | None:
-        result = await self.db.execute(
+    async def find_by_id_with_career(self, course_id: str) -> tuple[Course, list[Any]] | None:
+        result = await self.session.execute(
             select(CourseModel)
             .options(
                 selectinload(CourseModel.prerequisites)
