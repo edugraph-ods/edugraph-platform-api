@@ -2,12 +2,14 @@
 from app.features.education.courses.domain.repositories.course_prerrequisite import CoursePrerequisiteRepository
 from app.features.education.courses.infrastructure.persistence.sql_alchemist.models.course_prerequisite_model import \
     CoursePrerequisiteModel
+from app.features.shared.infrastructure.persistence.sql_alchemist.repositories.base_repository import BaseRepository
 
 
-class CoursePrerequisiteRepositoryImpl(CoursePrerequisiteRepository):
+class CoursePrerequisiteRepositoryImpl(CoursePrerequisiteRepository, BaseRepository):
 
     def __init__(self, db_session):
-        self.db = db_session
+        BaseRepository.__init__(self, db_session, CoursePrerequisiteModel)
+        self.session = db_session
 
     def _to_domain(self, model) -> CoursePrerequisite:
         return CoursePrerequisite(
@@ -21,6 +23,5 @@ class CoursePrerequisiteRepositoryImpl(CoursePrerequisiteRepository):
             course_id=course_prerequisite.course_id,
             prerequisite_id=course_prerequisite.prerequisite_id,
         )
-        self.db.add(model)
-        await self.db.commit()
+        await self.create(model)
         return course_prerequisite
