@@ -1,9 +1,12 @@
 from sqlalchemy import select, update
+
 from app.features.authentication.users.domain.models.entities.user import User
 from app.features.authentication.users.domain.repositories.user_repository import UserRepository
 from app.features.authentication.users.infrastructure.persistence.sql_alchemist.models.user_model import UserModel
 from datetime import datetime
 from datetime import timezone
+
+from app.features.shared.infrastructure.persistence.sql_alchemist.repositories.base_repository import BaseRepository
 
 """
 UserRepositorySQL is a class that implements the UserRepository interface.
@@ -12,9 +15,10 @@ It provides methods for interacting with a database to perform user-related oper
 Attributes:
     db: The database session used to execute queries.
 """
-class UserRepositoryImpl(UserRepository):
-    def __init__(self, db_session):
-        self.db = db_session
+class UserRepositoryImpl(UserRepository, BaseRepository):
+    def __init__(self, session):
+        BaseRepository.__init__(self, session, UserModel)
+        self.session = session
 
     """
     Gets a user by their email.
@@ -40,7 +44,7 @@ class UserRepositoryImpl(UserRepository):
         )
 
     async def get_user_by_email(self, email: str) -> User | None:
-        result = await self.db.execute(
+        result = await self.session.execute(
             select(UserModel).where(UserModel.email == email)
         )
         return self._to_domain(result.scalar_one_or_none())
@@ -66,9 +70,9 @@ class UserRepositoryImpl(UserRepository):
             updated_at=user.updated_at,
         )
 
-        self.db.add(user_model)
-        await self.db.commit()
-        await self.db.refresh(user_model)
+        self.session.add(user_model)
+        await self.session.commit()
+        await self.session.refresh(user_model)
         
         user.id = user_model.id
         user.created_at = user_model.created_at
@@ -85,19 +89,19 @@ class UserRepositoryImpl(UserRepository):
         bool: True if the user exists, False otherwise.
     """
     async def user_exists(self, email: str) -> bool:
-        result = await self.db.execute(
+        result = await self.session.execute(
             select(UserModel.id).where(UserModel.email == email)
         )
         return result.scalar_one_or_none() is not None
 
     async def get_user_by_id(self, user_id: str) -> User | None:
-        result = await self.db.execute(
+        result = await self.session.execute(
             select(UserModel).where(UserModel.id == user_id)
         )
         return self._to_domain(result.scalar_one_or_none())
 
     async def update_password(self, user_id: str, hashed_password: str) -> None:
-        await self.db.execute(
+        await self.session.execute(
             update(UserModel)
             .where(UserModel.id == user_id)
             .values(
@@ -105,4 +109,4 @@ class UserRepositoryImpl(UserRepository):
                 updated_at=datetime.now(timezone.utc),
             )
         )
-        await self.db.commit()
+        await self.session.commit()

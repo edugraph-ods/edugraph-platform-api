@@ -3,11 +3,13 @@
 from app.features.authentication.students.domain.models.entities.student import Student
 from app.features.authentication.students.domain.repositories.student_repository import StudentRepository
 from app.features.authentication.students.infrastructure.persistence.sql_alchemist.models.student_model import StudentModel
+from app.features.shared.infrastructure.persistence.sql_alchemist.repositories.base_repository import BaseRepository
 
 
-class StudentRepositoryImpl(StudentRepository):
-    def __init__(self, db_session):
-        self.db = db_session
+class StudentRepositoryImpl(StudentRepository, BaseRepository):
+    def __init__(self, session):
+        BaseRepository.__init__(self, session, StudentModel)
+        self.session = session
 
     def _to_domain(self, model: StudentModel) -> Student:
         return Student(
@@ -26,14 +28,14 @@ class StudentRepositoryImpl(StudentRepository):
             university_id=university_id,
         )
 
-        self.db.add(model)
-        await self.db.commit()
-        await self.db.refresh(model)
+        self.session.add(model)
+        await self.session.commit()
+        await self.session.refresh(model)
 
         return self._to_domain(model)
 
     async def get_student_by_user_id(self, user_id: str) -> Student | None:
-        result = await self.db.execute(
+        result = await self.session.execute(
             select(StudentModel).where(StudentModel.user_id == user_id)
         )
         model = result.scalar_one_or_none()

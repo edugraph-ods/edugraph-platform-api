@@ -14,7 +14,7 @@ class GetCourseByIdUseCase:
 
     async def execute(self, course_id: str):
 
-        result = await self.repository.find_by_id(course_id)
+        result = await self.repository.find_by_id_with_career(course_id)
         if not result:
             raise HTTPException(status_code=404, detail="Course not found")
 
