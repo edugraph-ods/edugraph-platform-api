@@ -143,6 +143,8 @@ app.add_middleware(
         "/api/v1/users/verify-recovery-code",
         "/api/v1/users/reset-password",
         "/api/v1/universities",
+        "/api/v1/careers",
+        "/api/v1/courses",
     },
     public_prefixes=(),
 )
