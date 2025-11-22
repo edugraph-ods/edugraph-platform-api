@@ -23,11 +23,15 @@ class CourseSeeder:
             credits = int(row["creditos"])
 
             career_name = row.get("Carrera", "").strip()
+            
+            print(f"[DEBUG] Processing course: {name} (cycle {cycle}) for career: '{career_name}'")
 
             career = await self.career_repo.find_by_name(career_name)
             if not career:
-                print(f"[WARN] Career not found: {career_name}")
+                print(f"[WARN] Career not found: '{career_name}' - skipping course: {name}")
                 continue
+            
+            print(f"[DEBUG] Career found: {career.name} (ID: {career.id})")
 
             course_entity = Course.create(
                 name=name,

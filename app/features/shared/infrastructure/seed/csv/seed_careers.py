@@ -21,9 +21,16 @@ class CareerSeeder:
             program = row.get("Programa", "Pregrado").strip()
             university_raw = row["Universidad "].strip()
 
+            print(f"[DEBUG] Processing career: '{career_name}' for program: '{program}'")
+
             name, acronym = UniversityCSVLoader.parse(university_raw)
 
             university = await self.university_repo.find_by_name(name)
+            if not university:
+                print(f"[WARN] University not found: '{name}' - skipping career: {career_name}")
+                continue
+
+            print(f"[DEBUG] University found: {university.name} (ID: {university.id})")
 
             career_entity = Career.create(
                 name=career_name,

@@ -34,7 +34,7 @@ class CourseCSVLoader:
                     reader = csv.DictReader(file)
 
                     for row in reader:
-                        name, acronym = CourseCSVLoader.parse(row["Nombre del Curso"])
+                        name, acronym = CourseCSVLoader.parse(row["Nombre del curso"])
 
                         try:
                             await use_case.execute(name, acronym)
