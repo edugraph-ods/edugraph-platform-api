@@ -1,4 +1,6 @@
-﻿from sqlalchemy import text
+﻿import ssl
+
+from sqlalchemy import text
 from sqlalchemy.engine import make_url
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
@@ -6,7 +8,12 @@ from sqlalchemy.orm import sessionmaker
 from app.core.config.config import settings
 
 
-engine = create_async_engine(settings.database_url, future=True, echo=False)
+# Azure MySQL Flexible Server
+ssl_context = ssl.create_default_context()
+ssl_context.check_hostname = False
+ssl_context.verify_mode = ssl.CERT_NONE
+
+engine = create_async_engine(settings.database_url, future=True, echo=False, connect_args={"ssl": ssl_context})
 async_session_maker = sessionmaker(
     bind=engine,
     class_=AsyncSession,
@@ -24,7 +31,7 @@ async def create_database_if_not_exists():
 
     server_db = "mysql"
     server_url = url.set(database=server_db)
-    temp_engine = create_async_engine(server_url, future=True, echo=False)
+    temp_engine = create_async_engine(server_url, future=True, echo=False, connect_args={"ssl": ssl_context})
 
     async with temp_engine.begin() as conn:
         await conn.execute(
