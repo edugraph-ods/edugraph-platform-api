@@ -14,16 +14,9 @@ class SignUpRequest(BaseModel):
 
     @validator("email")
     def validate_email_domain(cls, value: EmailStr) -> EmailStr:
-        allowed_domains = {
-            "upc.edu.pe",
-            "upn.edu.pe",
-            "utp.edu.pe",
-            "unmsm.edu.pe",
-            "gmail.com"
-        }
         domain = value.split("@")[-1]
-        if domain not in allowed_domains:
-            raise ValueError("email domain is not allowed")
+        if not domain.endswith(".edu.pe"):
+            raise ValueError("email domain is not allowed. Only institutional .edu.pe domains are permitted")
         return value
 
     @validator("password")
