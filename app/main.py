@@ -56,6 +56,9 @@ from app.features.education.courses.interfaces.rest.routers.course_router import
 from app.features.education.academic_progress.interfaces.rest.routers.academic_progress_router import (
     router as academic_progress_router,
 )
+from app.features.education.academic_progress.interfaces.rest.routers.min_prerequisite_course_router import (
+    router as min_prerequisite_course_router,
+)
 from app.features.authentication.users.infrastructure.middleware.auth_middleware import (
     AuthMiddleware,
 )
@@ -189,6 +192,7 @@ app.include_router(careers_router)
 app.include_router(careers_courses_router)
 app.include_router(course_router)
 app.include_router(academic_progress_router)
+app.include_router(min_prerequisite_course_router)
 
 
 if __name__ == "__main__":
