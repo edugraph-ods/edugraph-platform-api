@@ -17,6 +17,6 @@ def get_use_case(db=Depends(get_db)):
     return MinPrereqPathUseCase(repo)
 
 
-@router.get("/{career_id}/courses/{course_id}/min_prereq", response_model=MinPrereqPathResponse)
+@router.get("/{career_id}/courses/{course_id}/min_prerequisites", response_model=MinPrereqPathResponse)
 async def get_min_prereq(career_id: str, course_id: str, use_case: MinPrereqPathUseCase = Depends(get_use_case)):
     return await use_case.execute(career_id, course_id)
