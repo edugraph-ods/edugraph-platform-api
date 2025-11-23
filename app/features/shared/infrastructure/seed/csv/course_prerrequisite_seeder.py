@@ -14,62 +14,37 @@ class CoursePrerequisiteSeeder:
         loader = CourseCSVLoader()
         rows = loader.load(path)
 
-        print("\n===== STARTING PREREQUISITE SEEDER =====\n")
+        all_courses = await self.course_repo.get_all_courses()
+        by_code = {c.code.strip(): c for c in all_courses}
 
-        total_rows = len(rows)
-        print(f"Total rows read from CSV: {total_rows}\n")
-
-        for idx, row in enumerate(rows, start=1):
-            print(f"\n--- Processing row {idx}/{total_rows} ---")
-
-            course_code = row["codigo"].strip()
-            prerequisites_raw = row["Prerequisitos"].strip()
-
-            print(f"Current course: {course_code}")
-            print(f"Raw prerequisites: '{prerequisites_raw}'")
-
-            course = await self.course_repo.find_by_code(course_code)
+        pairs = set()
+        for row in rows:
+            course_code = row.get("codigo", "").strip()
+            prerequisites_raw = row.get("Prerequisitos", "").strip()
+            if not course_code or prerequisites_raw in ["-", "", "Ninguno", "NINGUNO"]:
+                continue
+            course = by_code.get(course_code)
             if not course:
-                print(f"Course NOT found in DB: {course_code}")
-                continue
-            else:
-                print(f"Course found in DB: {course.code} → {course.name}")
-
-            if prerequisites_raw in ["-", "", "Ninguno", "NINGUNO"]:
-                print(f"Course has no prerequisites. Skipping…")
                 continue
 
-            prereq_codes = [p.strip() for p in prerequisites_raw.split(",")]
-
-            print(f"[INFO] Processed prerequisites list: {prereq_codes}")
-
-            for p_code in prereq_codes:
-
-                if p_code.lower() in ["ninguno", "-", "", "tbd"]:
-                    print(f"Ignored requirement (not a course): {p_code}")
+            for p_code in [p.strip() for p in prerequisites_raw.split(",") if p.strip()]:
+                lc = p_code.lower()
+                if lc in ["ninguno", "-", "", "tbd"] or "crédit" in lc:
                     continue
-
-                if "crédit" in p_code.lower():
-                    print(f"Administrative requirement ignored: {p_code}")
+                prereq_course = by_code.get(p_code)
+                if not prereq_course or prereq_course.id == course.id:
                     continue
+                pairs.add((course.id, prereq_course.id))
 
-                print(f"Searching for prerequisite: {p_code}")
+        entities = [
+            CoursePrerequisite(
+                id=str(uuid4()),
+                course_id=cid,
+                prerequisite_id=pid,
+            ) for (cid, pid) in pairs
+        ]
 
-                prereq_course = await self.course_repo.find_by_code(p_code)
-
-                if not prereq_course:
-                    print(f"Prerequisite NOT found in DB: {p_code}")
-                    continue
-                else:
-                    print(f"Prerequisite found: {prereq_course.code} → {prereq_course.name}")
-
-                prereq_entity = CoursePrerequisite(
-                    id=str(uuid4()),
-                    course_id=course.id,
-                    prerequisite_id=prereq_course.id,
-                )
-
-                await self.course_prereq_repo.save(prereq_entity)
-
-                print(f"Prerequisite registered: {course.code} ← {prereq_course.code}")
+        BATCH = 1000
+        for i in range(0, len(entities), BATCH):
+            await self.course_prereq_repo.save_many(entities[i:i+BATCH])
 

@@ -1,4 +1,4 @@
-﻿from sqlalchemy import select
+﻿from sqlalchemy import select, func
 
 from app.features.education.careers.domain.models.entities.career import Career
 from app.features.education.careers.domain.repositories.career_repository import CareerRepository
@@ -57,3 +57,9 @@ class CareerRepositoryImpl(CareerRepository, BaseRepository):
     async def get_all_careers(self) -> list[Career]:
         models = await super().get_all()
         return [self._to_domain(model) for model in models]
+
+    async def count(self):
+        result = await self.session.execute(
+            select(func.count()).select_from(CareerModel)
+        )
+        return result.scalar()

@@ -1,6 +1,6 @@
 ﻿from typing import Any, Coroutine
 
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.orm import selectinload
 
 from app.features.education.courses.domain.models.entities.course import Course
@@ -14,10 +14,11 @@ from app.features.shared.infrastructure.persistence.sql_alchemist.repositories.b
 class CourseRepositoryImpl(CourseRepository, BaseRepository):
 
     def __init__(self, db_session):
-        BaseRepository.__init__(self, db_session, CourseRepository)
+        BaseRepository.__init__(self, db_session, CourseModel)
         self.session = db_session
 
     def _to_domain(self, model) -> Course:
+        # Do NOT access lazy relationships here to avoid MissingGreenlet during async lifespan
         return Course(
             id=model.id,
             name=model.name,
@@ -25,7 +26,6 @@ class CourseRepositoryImpl(CourseRepository, BaseRepository):
             credits=model.credits,
             cycle=model.cycle,
             career_id=model.career_id,
-            prerequisites=model.prerequisites,
         )
 
     async def save(self, course: Course) -> Course:
@@ -39,6 +39,19 @@ class CourseRepositoryImpl(CourseRepository, BaseRepository):
         )
         await self.create(model)
         return course
+
+    async def save_many(self, courses: list[Course]) -> None:
+        models = [
+            CourseModel(
+                id=c.id,
+                name=c.name,
+                code=c.code,
+                credits=c.credits,
+                cycle=c.cycle,
+                career_id=c.career_id,
+            ) for c in courses
+        ]
+        await self.create_many(models)
 
     async def find_by_name(self, name: str) -> Course | None:
         query = select(CourseModel).where(CourseModel.name == name)
@@ -66,7 +79,10 @@ class CourseRepositoryImpl(CourseRepository, BaseRepository):
         query = (
             select(CourseModel)
             .where(CourseModel.career_id == career_id)
-            .options(selectinload(CourseModel.prerequisites))
+            .options(
+                selectinload(CourseModel.prerequisites)
+                .selectinload(CoursePrerequisiteModel.prerequisite)
+            )
         )
 
         result = await self.session.execute(query)
@@ -97,6 +113,16 @@ class CourseRepositoryImpl(CourseRepository, BaseRepository):
         prerequisites_names = [p.prerequisite.name for p in getattr(model, "prerequisites", [])]
 
         return course, prerequisites_names
+
+    async def count(self):
+        result = await self.session.execute(
+            select(func.count()).select_from(CourseModel)
+        )
+        return result.scalar()
+
+    async def get_all_courses(self) -> list[Course]:
+        models = await super().get_all()
+        return [self._to_domain(m) for m in models]
 
 
 

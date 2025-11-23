@@ -16,23 +16,39 @@ class CourseSeeder:
 
         use_case = CreateCourseUseCase(self.course_repo)
 
+        unique_rows: dict[tuple[str, str], dict] = {}
         for row in rows:
-            cycle = int(row["Ciclo"])
-            name = row["Nombre del curso"].strip()
-            code = row["codigo"].strip()
-            credits = int(row["creditos"])
-
             career_name = row.get("Carrera", "").strip()
-            
-            print(f"[DEBUG] Processing course: {name} (cycle {cycle}) for career: '{career_name}'")
-
-            career = await self.career_repo.find_by_name(career_name)
-            if not career:
-                print(f"[WARN] Career not found: '{career_name}' - skipping course: {name}")
+            code = row.get("codigo", "").strip()
+            if not career_name or not code:
                 continue
-            
-            print(f"[DEBUG] Career found: {career.name} (ID: {career.id})")
+            unique_rows[(career_name, code)] = row
 
+        careers = await self.career_repo.get_all_careers()
+        career_by_name = {c.name: c for c in careers}
+
+        existing = await self.course_repo.get_all_courses()
+        existing_keys = {(c.career_id, c.code) for c in existing}
+
+        to_create: list[Course] = []
+        for (career_name, code), row in unique_rows.items():
+            career = career_by_name.get(career_name)
+            if not career:
+                print(f"[WARN] Career not found: '{career_name}' - skipping course with code: {code}")
+                continue
+
+            key = (career.id, code)
+            if key in existing_keys:
+                continue
+
+            try:
+                cycle = int(row["Ciclo"]) if str(row.get("Ciclo", "")).strip() else 0
+                credits = int(row["creditos"]) if str(row.get("creditos", "")).strip() else 0
+            except ValueError:
+                cycle = 0
+                credits = 0
+
+            name = row.get("Nombre del curso", "").strip()
             course_entity = Course.create(
                 name=name,
                 code=code,
@@ -40,15 +56,8 @@ class CourseSeeder:
                 cycle=cycle,
                 career_id=career.id,
             )
+            to_create.append(course_entity)
 
-            try:
-                await use_case.execute(
-                    name=course_entity.name,
-                    code=code,
-                    credits=course_entity.credits,
-                    cycle=course_entity.cycle,
-                    career_id=course_entity.career_id
-                )
-
-            except ValueError as e:
-                print(f"Error creating course '{name}': {e}")
+        BATCH = 500
+        for i in range(0, len(to_create), BATCH):
+            await self.course_repo.save_many(to_create[i:i+BATCH])
