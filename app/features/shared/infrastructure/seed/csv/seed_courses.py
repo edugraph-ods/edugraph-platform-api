@@ -2,7 +2,8 @@
     CreateCourseUseCase
 from app.features.education.courses.domain.models.entities.course import Course
 from app.features.education.courses.infrastructure.loaders.csv.course_csv_loader import CourseCSVLoader
-
+from app.features.education.universities.infrastructure.loaders.csv.university_csv_loader import UniversityCSVLoader
+from sqlalchemy import text
 
 class CourseSeeder:
     def __init__(self, session, course_repo, career_repo):
@@ -16,25 +17,40 @@ class CourseSeeder:
 
         use_case = CreateCourseUseCase(self.course_repo)
 
-        unique_rows: dict[tuple[str, str], dict] = {}
+        def norm_code(value: str) -> str:
+            return " ".join(value.strip().split()).upper()
+
+        unique_rows: dict[tuple[str, str, str], dict] = {}
         for row in rows:
+            university_raw = row.get("Universidad ", "").strip()
+            uni_name, _ = UniversityCSVLoader.parse(university_raw)
             career_name = row.get("Carrera", "").strip()
-            code = row.get("codigo", "").strip()
-            if not career_name or not code:
+            code = norm_code(row.get("codigo", ""))
+            if not uni_name or not career_name or not code:
                 continue
-            unique_rows[(career_name, code)] = row
+            unique_rows[(uni_name, career_name, code)] = row
 
         careers = await self.career_repo.get_all_careers()
-        career_by_name = {c.name: c for c in careers}
+        result = await self.session.execute(text("SELECT id, name FROM universities"))
+        uni_name_by_id: dict[str, str] = {}
+        for uid, raw_name in result.fetchall():
+            name, _ = UniversityCSVLoader.parse(str(raw_name))
+            uni_name_by_id[str(uid)] = name
+
+        career_by_uni_and_name = {}
+        for c in careers:
+            uni_name = uni_name_by_id.get(c.university_id)
+            if uni_name:
+                career_by_uni_and_name[(uni_name, c.name)] = c
 
         existing = await self.course_repo.get_all_courses()
-        existing_keys = {(c.career_id, c.code) for c in existing}
+        existing_keys = {(c.career_id, norm_code(c.code)) for c in existing}
 
         to_create: list[Course] = []
-        for (career_name, code), row in unique_rows.items():
-            career = career_by_name.get(career_name)
+        for (uni_name, career_name, code), row in unique_rows.items():
+            career = career_by_uni_and_name.get((uni_name, career_name))
             if not career:
-                print(f"[WARN] Career not found: '{career_name}' - skipping course with code: {code}")
+                print(f"[WARN] Career not found: '{uni_name}' - '{career_name}' - skipping course with code: {code}")
                 continue
 
             key = (career.id, code)

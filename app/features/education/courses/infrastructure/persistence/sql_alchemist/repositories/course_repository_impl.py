@@ -18,7 +18,6 @@ class CourseRepositoryImpl(CourseRepository, BaseRepository):
         self.session = db_session
 
     def _to_domain(self, model) -> Course:
-        # Do NOT access lazy relationships here to avoid MissingGreenlet during async lifespan
         return Course(
             id=model.id,
             name=model.name,
@@ -79,19 +78,21 @@ class CourseRepositoryImpl(CourseRepository, BaseRepository):
         query = (
             select(CourseModel)
             .where(CourseModel.career_id == career_id)
+            .join(CourseModel.career)
             .options(
                 selectinload(CourseModel.prerequisites)
                 .selectinload(CoursePrerequisiteModel.prerequisite)
             )
+            .order_by(CourseModel.cycle, CourseModel.code)
         )
 
         result = await self.session.execute(query)
-        models = result.scalars().all()
+        models = result.scalars().unique().all()  
 
         courses = []
         for model in models:
             course = self._to_domain(model)
-            course.prerequisites = [p.prerequisite.id for p in getattr(model, "prerequisites", [])]
+            course.prerequisites = [p.prerequisite.code for p in getattr(model, "prerequisites", [])]
             courses.append(course)
 
         return courses
