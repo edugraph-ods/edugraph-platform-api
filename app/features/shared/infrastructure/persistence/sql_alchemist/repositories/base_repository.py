@@ -12,6 +12,13 @@ class BaseRepository:
         await self.session.refresh(obj)
         return obj
 
+    async def create_many(self, objs):
+        if not objs:
+            return []
+        self.session.add_all(objs)
+        await self.session.commit()
+        return objs
+
     async def get_by_id(self, id):
         query = select(self.model).where(self.model.id == id)
         result = await self.session.execute(query)

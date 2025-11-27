@@ -1,9 +1,8 @@
 ﻿from typing import Any, Coroutine
 
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.orm import selectinload
 
-from app.features.education.academic_progress.domain.models.value_objects.prerequisite import Prerequisites
 from app.features.education.courses.domain.models.entities.course import Course
 from app.features.education.courses.domain.repositories.course_repository import CourseRepository
 from app.features.education.courses.infrastructure.persistence.sql_alchemist.models.course_model import CourseModel
@@ -15,11 +14,10 @@ from app.features.shared.infrastructure.persistence.sql_alchemist.repositories.b
 class CourseRepositoryImpl(CourseRepository, BaseRepository):
 
     def __init__(self, db_session):
-        BaseRepository.__init__(self, db_session, CourseRepository)
+        BaseRepository.__init__(self, db_session, CourseModel)
         self.session = db_session
 
     def _to_domain(self, model) -> Course:
-        prereq_ids = [p.prerequisite.id for p in getattr(model, "prerequisites", [])]
         return Course(
             id=model.id,
             name=model.name,
@@ -27,7 +25,6 @@ class CourseRepositoryImpl(CourseRepository, BaseRepository):
             credits=model.credits,
             cycle=model.cycle,
             career_id=model.career_id,
-            prerequisites=Prerequisites(prereq_ids),
         )
 
     async def save(self, course: Course) -> Course:
@@ -42,6 +39,19 @@ class CourseRepositoryImpl(CourseRepository, BaseRepository):
         await self.create(model)
         return course
 
+    async def save_many(self, courses: list[Course]) -> None:
+        models = [
+            CourseModel(
+                id=c.id,
+                name=c.name,
+                code=c.code,
+                credits=c.credits,
+                cycle=c.cycle,
+                career_id=c.career_id,
+            ) for c in courses
+        ]
+        await self.create_many(models)
+
     async def find_by_name(self, name: str) -> Course | None:
         query = select(CourseModel).where(CourseModel.name == name)
 
@@ -54,31 +64,35 @@ class CourseRepositoryImpl(CourseRepository, BaseRepository):
         return self._to_domain(model)
 
     async def find_by_code(self, code: str) -> Course | None:
-        query = (
-            select(CourseModel)
-            .where(CourseModel.code == code)
-            .options(selectinload(CourseModel.prerequisites)
-                     .selectinload(CoursePrerequisiteModel.prerequisite))
-        )
+        query = select(CourseModel).where(CourseModel.code == code)
 
         result = await self.session.execute(query)
         model = result.scalar_one_or_none()
-        return self._to_domain(model) if model else None
+
+        if model is None:
+            return None
+
+        return self._to_domain(model)
 
     async def find_by_career_id(self, career_id: str) -> list[Course]:
         query = (
             select(CourseModel)
             .where(CourseModel.career_id == career_id)
-            .options(selectinload(CourseModel.prerequisites))
+            .join(CourseModel.career)
+            .options(
+                selectinload(CourseModel.prerequisites)
+                .selectinload(CoursePrerequisiteModel.prerequisite)
+            )
+            .order_by(CourseModel.cycle, CourseModel.code)
         )
 
         result = await self.session.execute(query)
-        models = result.scalars().all()
+        models = result.scalars().unique().all()  
 
         courses = []
         for model in models:
             course = self._to_domain(model)
-            course.prerequisites = [p.prerequisite.id for p in getattr(model, "prerequisites", [])]
+            course.prerequisites = [p.prerequisite.code for p in getattr(model, "prerequisites", [])]
             courses.append(course)
 
         return courses
@@ -101,9 +115,12 @@ class CourseRepositoryImpl(CourseRepository, BaseRepository):
 
         return course, prerequisites_names
 
-    async def get_by_id(self, course_id: str) -> Course | None:
-        result = await self.session.execute(select(CourseModel).where(CourseModel.id == course_id))
-        model = result.scalar_one_or_none()
-        return self._to_domain(model) if model else None
+    async def count(self):
+        result = await self.session.execute(
+            select(func.count()).select_from(CourseModel)
+        )
+        return result.scalar()
 
-
+    async def get_all_courses(self) -> list[Course]:
+        models = await super().get_all()
+        return [self._to_domain(m) for m in models]

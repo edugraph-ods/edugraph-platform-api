@@ -1,4 +1,4 @@
-﻿import csv
+﻿﻿import csv
 import re
 
 
@@ -6,34 +6,53 @@ class UniversityCSVLoader:
 
     @staticmethod
     def parse(raw: str):
-        match = re.match(r"^(.*?)\s*\((.*?)\)$", raw.strip())
+        cleaned = raw.replace("\u00A0", " ").strip()
+        match = re.match(r"^(.*?)\s*\((.*?)\)$", cleaned)
         if match:
-            name = match.group(1).strip()
-            acronym = match.group(2).strip()
-        else:
-            name = raw.strip()
-            acronym = UniversityCSVLoader.extract_acronym_from_name(name)
-
+            return match.group(1), match.group(2)
+        name = cleaned
+        acronym = UniversityCSVLoader.generate_acronym(name)
         if not acronym:
-            acronym = ''.join([w[0].upper() for w in name.split() if w])
+            parts = [p for p in re.sub(r"[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]"," ", name).split() if p]
+            acronym = "".join(w[0].upper() for w in parts[:4]) or "UNI"
         return name, acronym
 
     @staticmethod
-    def extract_acronym_from_name(name: str):
-        words = name.split()
-        if len(words) >= 2:
-            return ''.join(w[0].upper() for w in words[:3])
-        return name[:3].upper()
+    def generate_acronym(name: str) -> str:
+        name_norm = re.sub(r"[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]"," ", name.replace("\u00A0"," "))
+        words_raw = (
+            name_norm
+                .replace("Á","A").replace("É","E").replace("Í","I").replace("Ó","O").replace("Ú","U")
+                .replace("á","a").replace("é","e").replace("í","i").replace("ó","o").replace("ú","u")
+        ).split()
+        words_lower = [w.lower() for w in words_raw]
+        if {"nacional","mayor","san","marcos"}.issubset(set(words_lower)):
+            return "UNMSM"
+        if {"catolica","santa","maria"}.issubset(set(words_lower)):
+            return "USMP"
+        if {"catolica","peruana"}.issubset(set(words_lower)):
+            return "PUCP"
+        if {"nacional","ingenieria"}.issubset(set(words_lower)):
+            return "UNI"
+        if "pacifico" in words_lower:
+            return "UP"
+        if "lima" in words_lower:
+            return "UL"
+
+        stop = {"de","la","las","los","del","y","en","el","universidad","peruana","nacional"}
+        major = [w for w in words_raw if len(w) > 3 and w.lower() not in stop]
+        if major:
+            return "".join(w[0].upper() for w in major[:4])
+        return "".join(w[0].upper() for w in words_raw[:4])
 
     @staticmethod
     def load(path: str):
-        encodings = ["utf-8-sig", "latin-1", "cp1252"]
+        encodings = ["utf-8", "latin-1", "cp1252"]
 
         for enc in encodings:
             try:
                 with open(path, newline="", encoding=enc) as file:
                     reader = csv.DictReader(file)
-                    print("HEADERS:", reader.fieldnames)
                     return list(reader)
             except UnicodeDecodeError:
                 continue
@@ -42,7 +61,7 @@ class UniversityCSVLoader:
 
     @staticmethod
     async def load_and_insert(path, use_case):
-        encodings = ["utf-8-sig", "latin-1", "cp1252"]
+        encodings = ["utf-8", "latin-1", "cp1252"]
 
         for enc in encodings:
             try:
@@ -50,15 +69,13 @@ class UniversityCSVLoader:
                     reader = csv.DictReader(file)
 
                     for row in reader:
-                        row = {k.replace('\ufeff', ''): v for k, v in row.items()}
-
-                        name, acronym = UniversityCSVLoader.parse(row["Universidad"])
+                        name, acronym = UniversityCSVLoader.parse(row["Universidad "])
 
                         try:
                             await use_case.execute(name, acronym)
                         except ValueError:
                             pass
-                return
+                    return
 
             except UnicodeDecodeError:
                 continue

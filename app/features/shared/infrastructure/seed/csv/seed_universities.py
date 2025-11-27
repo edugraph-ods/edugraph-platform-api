@@ -22,6 +22,8 @@ class UniversitySeeder:
 
         for raw in raw_unis:
             name, acronym = UniversityCSVLoader.parse(raw)
+            if not acronym:
+                acronym = UniversityCSVLoader.generate_acronym(name)
 
             try:
                 await use_case.execute(name=name, acronym=acronym)

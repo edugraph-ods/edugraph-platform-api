@@ -3,6 +3,7 @@ from app.features.education.courses.domain.repositories.course_prerrequisite imp
 from app.features.education.courses.infrastructure.persistence.sql_alchemist.models.course_prerequisite_model import \
     CoursePrerequisiteModel
 from app.features.shared.infrastructure.persistence.sql_alchemist.repositories.base_repository import BaseRepository
+from sqlalchemy import select, func
 
 
 class CoursePrerequisiteRepositoryImpl(CoursePrerequisiteRepository, BaseRepository):
@@ -25,3 +26,19 @@ class CoursePrerequisiteRepositoryImpl(CoursePrerequisiteRepository, BaseReposit
         )
         await self.create(model)
         return course_prerequisite
+
+    async def save_many(self, prereqs: list[CoursePrerequisite]) -> None:
+        models = [
+            CoursePrerequisiteModel(
+                id=p.id,
+                course_id=p.course_id,
+                prerequisite_id=p.prerequisite_id,
+            ) for p in prereqs
+        ]
+        await self.create_many(models)
+
+    async def count(self):
+        result = await self.session.execute(
+            select(func.count()).select_from(CoursePrerequisiteModel)
+        )
+        return result.scalar()

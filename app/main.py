@@ -87,6 +87,12 @@ async def lifespan(app: FastAPI):
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        try:
+            await conn.exec_driver_sql(
+                "ALTER TABLE universities MODIFY acronym VARCHAR(10) NOT NULL"
+            )
+        except Exception:
+            pass
 
     # Seeder
     async with async_session_maker() as session:
@@ -95,29 +101,23 @@ async def lifespan(app: FastAPI):
         course_repo = CourseRepositoryImpl(session)
         course_prereq_repo = CoursePrerequisiteRepositoryImpl(session)
 
-        uni_count = await university_repo.count()
-        if uni_count == 0:
-            csv_path = get_csv_path("Malla-Curricular-Dataset-data.csv")
+        csv_path = get_csv_path("Malla-Curricular-Dataset-data.csv")
 
-            # Seed universities
-            uni_seeder = UniversitySeeder(session, university_repo)
-            await uni_seeder.seed(csv_path)
-            print(">>> Universities seeded successfully.")
+        uni_seeder = UniversitySeeder(session, university_repo)
+        await uni_seeder.seed(csv_path)
+        print(">>> Universities seeded successfully.")
 
-            # Seed careers
-            career_seeder = CareerSeeder(session, career_repo, university_repo)
-            await career_seeder.seed(csv_path)
-            print(">>> Careers seeded successfully.")
+        career_seeder = CareerSeeder(session, career_repo, university_repo)
+        await career_seeder.seed(csv_path)
+        print(">>> Careers seeded successfully.")
 
-            # Seed courses
-            course_seeder = CourseSeeder(session, course_repo, career_repo)
-            await course_seeder.seed(csv_path)
-            print(">>> Courses seeded successfully.")
+        course_seeder = CourseSeeder(session, course_repo, career_repo)
+        await course_seeder.seed(csv_path)
+        print(">>> Courses seeded successfully.")
 
-            # Seed course prerequisite
-            course_prereq_seeder = CoursePrerequisiteSeeder(session, course_repo, course_prereq_repo)
-            await course_prereq_seeder.seed(csv_path)
-            print(">>> Course prerequisites seeded successfully.")
+        course_prereq_seeder = CoursePrerequisiteSeeder(session, course_repo, course_prereq_repo)
+        await course_prereq_seeder.seed(csv_path)
+        print(">>> Course prerequisites seeded successfully.")
 
     yield
 
