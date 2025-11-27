@@ -16,14 +16,30 @@ class CareerSeeder:
 
         use_case = CreateCareerUseCase(self.career_repo)
 
+        unique_items = set()
         for row in rows:
-            career_name = row["Carrera"].strip()
+            career_name = row.get("Carrera", "").strip()
             program = row.get("Programa", "Pregrado").strip()
-            university_raw = row["Universidad "].strip()
+            university_raw = row.get("Universidad ", "").strip()
+            uni_name, _ = UniversityCSVLoader.parse(university_raw)
+            if career_name and uni_name:
+                unique_items.add((uni_name, career_name, program))
 
-            name, acronym = UniversityCSVLoader.parse(university_raw)
+        all_unis = await self.university_repo.get_all_universities()
+        uni_by_name = {u.name: u for u in all_unis}
 
-            university = await self.university_repo.find_by_name(name)
+        existing_careers = await self.career_repo.get_all_careers()
+        existing_pairs = {(c.university_id, c.name) for c in existing_careers}
+
+        for uni_name, career_name, program in unique_items:
+            university = uni_by_name.get(uni_name)
+            if not university:
+                print(f"[WARN] University not found: '{uni_name}' - skipping career: {career_name}")
+                continue
+
+            key = (university.id, career_name)
+            if key in existing_pairs:
+                continue
 
             career_entity = Career.create(
                 name=career_name,
@@ -37,6 +53,5 @@ class CareerSeeder:
                     program=career_entity.program,
                     university_id=career_entity.university_id
                 )
-
-            except ValueError as e:
-                print(f"Error creating career '{career_name}': {e}")
+            except ValueError:
+                pass

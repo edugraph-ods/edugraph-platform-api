@@ -25,6 +25,7 @@ class GetStudentProfileUseCase:
             raise ValueError("University not found")
 
         return {
+            "id": student.id,
             "name": student.name,
             "email": user.email,
             "university": university.name,

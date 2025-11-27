@@ -1,9 +1,5 @@
-﻿import asyncio
-
-from app.features.education.universities.infrastructure.loaders.csv.university_csv_loader import UniversityCSVLoader
+﻿from app.features.education.universities.infrastructure.loaders.csv.university_csv_loader import UniversityCSVLoader
 from app.features.education.universities.application.internal.inbound_services.use_cases.create_university_use_case import CreateUniversityUseCase
-from app.features.education.universities.infrastructure.persistence.sql_alchemist.repositories.university_repository_impl import UniversityRepositoryImpl
-from app.features.shared.infrastructure.persistence.sql_alchemist.start.session import async_session_maker
 
 class UniversitySeeder:
     def __init__(self, session, university_repo):
@@ -20,6 +16,8 @@ class UniversitySeeder:
 
         for raw in raw_unis:
             name, acronym = UniversityCSVLoader.parse(raw)
+            if not acronym:
+                acronym = UniversityCSVLoader.generate_acronym(name)
 
             try:
                 await use_case.execute(name=name, acronym=acronym)

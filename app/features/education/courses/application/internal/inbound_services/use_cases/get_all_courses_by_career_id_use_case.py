@@ -8,9 +8,11 @@ class GetAllCoursesByCareerIdUseCase:
     async def execute(self, career_id: str):
         courses = await self.repository.find_by_career_id(career_id)
 
-
         if not courses:
-            raise ValueError("Courses not found")
+            return {
+                "total_courses": 0,
+                "cycles": []
+            }
 
         courses.sort(key=lambda c: c.cycle)
 
@@ -36,4 +38,4 @@ class GetAllCoursesByCareerIdUseCase:
             ]
         }
 
-        return wrapper or None
+        return wrapper or {"total_courses": 0, "cycles": []}

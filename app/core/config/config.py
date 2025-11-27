@@ -8,9 +8,9 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = 30
     
     # Database -mysql
-    username: str = "edugraph"
-    password: str = "Acceso09"
-    host: str = "edugraph.mysql.database.azure.com"
+    username: str = "root"
+    password: str = "Hawaiian2014"
+    host: str = "localhost"
     port: int = 3306
     database: str = "edugraph"
     database_url: str = f"mysql+aiomysql://{username}:{password}@{host}:{port}/{database}"

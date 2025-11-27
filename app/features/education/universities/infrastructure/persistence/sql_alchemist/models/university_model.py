@@ -9,7 +9,7 @@ class UniversityModel(Base):
 
     id = Column(String(36), primary_key=True, index=True)
     name = Column(String(255), nullable=False)
-    acronym = Column(String(3), nullable=False)
+    acronym = Column(String(10), nullable=False)
 
     students = relationship("StudentModel", back_populates="university")
     careers = relationship("CareerModel", back_populates="university")
