@@ -1,4 +1,4 @@
-﻿﻿from app.features.education.courses.application.internal.inbound_services.use_cases.create_courses_use_case import \
+﻿from app.features.education.courses.application.internal.inbound_services.use_cases.create_courses_use_case import \
     CreateCourseUseCase
 from app.features.education.courses.domain.models.entities.course import Course
 from app.features.education.courses.infrastructure.loaders.csv.course_csv_loader import CourseCSVLoader

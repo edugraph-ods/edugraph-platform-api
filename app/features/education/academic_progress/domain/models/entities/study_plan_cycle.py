@@ -1,5 +1,9 @@
-﻿from dataclasses import field, dataclass
+﻿import uuid
+from dataclasses import field, dataclass
 from typing import List
+
+from app.features.education.academic_progress.domain.models.entities.study_plan_course import StudyPlanCourse
+
 
 def _generate_object_id() -> str:
     return uuid.uuid4().hex[:24]

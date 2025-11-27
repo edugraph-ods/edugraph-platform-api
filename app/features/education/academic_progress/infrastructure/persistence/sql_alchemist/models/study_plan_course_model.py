@@ -11,7 +11,7 @@ class StudyPlanCourseModel(Base):
     course_id = Column(String(36), ForeignKey("courses.id"), nullable=False)
 
     status = Column(String(36), default="NOT_STARTED")
-    name = Column(String(56), nullable=False)
+    name = Column(String(225), nullable=False)
     credits = Column(Integer, nullable=False)
 
     cycle = relationship("StudyPlanCycleModel", back_populates="courses")

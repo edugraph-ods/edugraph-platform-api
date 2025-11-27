@@ -124,3 +124,9 @@ class CourseRepositoryImpl(CourseRepository, BaseRepository):
     async def get_all_courses(self) -> list[Course]:
         models = await super().get_all()
         return [self._to_domain(m) for m in models]
+
+    async def get_by_id(self, course_id: str) -> Course | None:
+        query = select(CourseModel).where(CourseModel.id == course_id)
+        result = await self.session.execute(query)
+        model = result.scalar_one_or_none()
+        return self._to_domain(model) if model else None

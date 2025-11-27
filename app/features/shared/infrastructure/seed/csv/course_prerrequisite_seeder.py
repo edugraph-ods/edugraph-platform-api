@@ -4,6 +4,7 @@ from sqlalchemy import text
 
 from app.features.education.courses.domain.models.entities.course_prerrequisite import CoursePrerequisite
 from app.features.education.courses.infrastructure.loaders.csv.course_csv_loader import CourseCSVLoader
+from app.features.education.universities.infrastructure.loaders.csv.university_csv_loader import UniversityCSVLoader
 
 
 class CoursePrerequisiteSeeder:
@@ -61,4 +62,3 @@ class CoursePrerequisiteSeeder:
         BATCH = 1000
         for i in range(0, len(entities), BATCH):
             await self.course_prereq_repo.save_many(entities[i:i+BATCH])
-

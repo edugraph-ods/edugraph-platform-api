@@ -27,9 +27,13 @@ class CreateStudyPlanUseCase:
         )
 
         for c in payload.cycles:
-            cycle = StudyPlanCycle(cycle_number=c.cycle_number)
+            cycle = StudyPlanCycle(
+                cycle_number=c.cycle_number,
+                study_plan_id=plan.id
+            )
 
             for course_item in c.courses:
+
                 course = await self.course_repo.get_by_id(course_item.course_id)
                 if not course:
                     raise ValueError(f"Course {course_item.course_id} not found")
@@ -52,5 +56,5 @@ class CreateStudyPlanUseCase:
 
             plan.cycles.append(cycle)
 
-        saved = self.study_plan_repo.save(plan)
+        saved = await self.study_plan_repo.save(plan)
         return saved
