@@ -19,8 +19,8 @@ class CourseSeeder:
         for row in rows:
             cycle = int(row["Ciclo"])
             name = row["Nombre del curso"].strip()
-            code = row["codigo"].strip()
-            credits = int(row["creditos"])
+            code = row["Codigo"].strip()
+            credits = int(row["Creditos"])
 
             career_name = row.get("Carrera", "").strip()
 

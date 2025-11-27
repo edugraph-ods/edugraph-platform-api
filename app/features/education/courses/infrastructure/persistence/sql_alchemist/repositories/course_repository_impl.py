@@ -3,6 +3,7 @@
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
+from app.features.education.academic_progress.domain.models.value_objects.prerequisite import Prerequisites
 from app.features.education.courses.domain.models.entities.course import Course
 from app.features.education.courses.domain.repositories.course_repository import CourseRepository
 from app.features.education.courses.infrastructure.persistence.sql_alchemist.models.course_model import CourseModel
@@ -18,6 +19,7 @@ class CourseRepositoryImpl(CourseRepository, BaseRepository):
         self.session = db_session
 
     def _to_domain(self, model) -> Course:
+        prereq_ids = [p.prerequisite.id for p in getattr(model, "prerequisites", [])]
         return Course(
             id=model.id,
             name=model.name,
@@ -25,7 +27,7 @@ class CourseRepositoryImpl(CourseRepository, BaseRepository):
             credits=model.credits,
             cycle=model.cycle,
             career_id=model.career_id,
-            prerequisites=model.prerequisites,
+            prerequisites=Prerequisites(prereq_ids),
         )
 
     async def save(self, course: Course) -> Course:
@@ -52,15 +54,16 @@ class CourseRepositoryImpl(CourseRepository, BaseRepository):
         return self._to_domain(model)
 
     async def find_by_code(self, code: str) -> Course | None:
-        query = select(CourseModel).where(CourseModel.code == code)
+        query = (
+            select(CourseModel)
+            .where(CourseModel.code == code)
+            .options(selectinload(CourseModel.prerequisites)
+                     .selectinload(CoursePrerequisiteModel.prerequisite))
+        )
 
         result = await self.session.execute(query)
         model = result.scalar_one_or_none()
-
-        if model is None:
-            return None
-
-        return self._to_domain(model)
+        return self._to_domain(model) if model else None
 
     async def find_by_career_id(self, career_id: str) -> list[Course]:
         query = (
@@ -98,5 +101,9 @@ class CourseRepositoryImpl(CourseRepository, BaseRepository):
 
         return course, prerequisites_names
 
+    async def get_by_id(self, course_id: str) -> Course | None:
+        result = await self.session.execute(select(CourseModel).where(CourseModel.id == course_id))
+        model = result.scalar_one_or_none()
+        return self._to_domain(model) if model else None
 
 

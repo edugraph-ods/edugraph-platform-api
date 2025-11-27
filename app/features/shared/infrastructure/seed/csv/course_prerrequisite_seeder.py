@@ -22,7 +22,7 @@ class CoursePrerequisiteSeeder:
         for idx, row in enumerate(rows, start=1):
             print(f"\n--- Processing row {idx}/{total_rows} ---")
 
-            course_code = row["codigo"].strip()
+            course_code = row["Codigo"].strip()
             prerequisites_raw = row["Prerequisitos"].strip()
 
             print(f"Current course: {course_code}")

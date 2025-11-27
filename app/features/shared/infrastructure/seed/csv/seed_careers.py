@@ -16,14 +16,23 @@ class CareerSeeder:
 
         use_case = CreateCareerUseCase(self.career_repo)
 
-        for row in rows:
-            career_name = row["Carrera"].strip()
+        headers = rows[0].keys()
+        print("CSV Headers detected:", headers)
+
+        for i, row in enumerate(rows, start=1):
+
+            row = {k.replace('\ufeff', '').strip(): v for k, v in row.items()}
+
+            career_name = row.get("Carrera", "").strip()
             program = row.get("Programa", "Pregrado").strip()
-            university_raw = row["Universidad "].strip()
+            university_raw = row["Universidad"].strip()
 
             name, acronym = UniversityCSVLoader.parse(university_raw)
-
             university = await self.university_repo.find_by_name(name)
+
+            if not university:
+                print(f"Row {i} skipped: university '{name}' not found")
+                continue
 
             career_entity = Career.create(
                 name=career_name,
@@ -37,6 +46,5 @@ class CareerSeeder:
                     program=career_entity.program,
                     university_id=career_entity.university_id
                 )
-
             except ValueError as e:
-                print(f"Error creating career '{career_name}': {e}")
+                print(f"Row {i} error creating career '{career_name}': {e}")

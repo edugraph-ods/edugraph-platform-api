@@ -16,7 +16,9 @@ class UniversitySeeder:
 
         use_case = CreateUniversityUseCase(self.university_repo)
 
-        raw_unis = {row["Universidad "].strip() for row in rows}
+        print("HEADERS:", rows[0].keys())
+
+        raw_unis = {row["Universidad"].strip() for row in rows}
 
         for raw in raw_unis:
             name, acronym = UniversityCSVLoader.parse(raw)
