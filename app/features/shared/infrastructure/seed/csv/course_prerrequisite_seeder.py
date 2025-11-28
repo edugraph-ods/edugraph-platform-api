@@ -62,4 +62,3 @@ class CoursePrerequisiteSeeder:
         BATCH = 1000
         for i in range(0, len(entities), BATCH):
             await self.course_prereq_repo.save_many(entities[i:i+BATCH])
-

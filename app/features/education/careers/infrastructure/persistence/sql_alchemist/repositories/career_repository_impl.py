@@ -45,7 +45,7 @@ class CareerRepositoryImpl(CareerRepository, BaseRepository):
     async def find_by_name(self, name: str) -> Career | None:
         query = select(CareerModel).where(CareerModel.name == name)
         result = await self.session.execute(query)
-        model = result.scalar_one_or_none()
+        model = result.scalars().first()
         return self._to_domain(model) if model else None
 
     async def find_by_university_id(self, university_id: str) -> list[Career]:

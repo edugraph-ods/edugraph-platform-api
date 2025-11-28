@@ -1,9 +1,5 @@
-﻿import asyncio
-
-from app.features.education.universities.infrastructure.loaders.csv.university_csv_loader import UniversityCSVLoader
+﻿from app.features.education.universities.infrastructure.loaders.csv.university_csv_loader import UniversityCSVLoader
 from app.features.education.universities.application.internal.inbound_services.use_cases.create_university_use_case import CreateUniversityUseCase
-from app.features.education.universities.infrastructure.persistence.sql_alchemist.repositories.university_repository_impl import UniversityRepositoryImpl
-from app.features.shared.infrastructure.persistence.sql_alchemist.start.session import async_session_maker
 
 class UniversitySeeder:
     def __init__(self, session, university_repo):
