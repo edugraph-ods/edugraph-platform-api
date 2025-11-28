@@ -148,6 +148,7 @@ app.add_middleware(
         "/api/v1/universities",
         "/api/v1/careers",
         "/api/v1/courses",
+        "/api/v1/study-plans",
     },
     public_prefixes=(),
 )
