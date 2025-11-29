@@ -24,7 +24,7 @@ class GetAllCoursesByCareerIdUseCase:
                 "code": c.code,
                 "cycle": c.cycle,
                 "credits": c.credits,
-                "prereqs": getattr(c, "prerequisites", []),
+                "prereqs": [p.id for p in getattr(c, "prerequisites", [])],
             })
 
         wrapper = {

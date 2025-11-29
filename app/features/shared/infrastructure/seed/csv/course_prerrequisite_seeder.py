@@ -1,8 +1,7 @@
-﻿from uuid import uuid4
+﻿from sqlalchemy import text
 
-from sqlalchemy import text
-
-from app.features.education.courses.domain.models.entities.course_prerrequisite import CoursePrerequisite
+from app.features.education.courses.application.internal.inbound_services.use_cases.create_course_prerequisite_use_case import \
+    CreateCoursePrerequisiteUseCase
 from app.features.education.courses.infrastructure.loaders.csv.course_csv_loader import CourseCSVLoader
 from app.features.education.universities.infrastructure.loaders.csv.university_csv_loader import UniversityCSVLoader
 
@@ -12,10 +11,12 @@ class CoursePrerequisiteSeeder:
         self.session = session
         self.course_repo = course_repo
         self.course_prereq_repo = course_prereq_repo
+        self.create_prereq_use_case = CreateCoursePrerequisiteUseCase(course_prereq_repo)
 
     async def seed(self, path: str):
         loader = CourseCSVLoader()
         rows = loader.load(path)
+
         result = await self.session.execute(text(
             """
             SELECT c.id, c.code, ca.name as career_name, u.name as uni_name
@@ -24,6 +25,7 @@ class CoursePrerequisiteSeeder:
             JOIN universities u ON ca.university_id = u.id
             """
         ))
+
         by_uni_career_code: dict[tuple[str, str, str], str] = {}
         for cid, code, career_name, uni_raw in result.fetchall():
             uni_name, _ = UniversityCSVLoader.parse(str(uni_raw))
@@ -51,14 +53,5 @@ class CoursePrerequisiteSeeder:
                     continue
                 pairs.add((course_id, prereq_course_id))
 
-        entities = [
-            CoursePrerequisite(
-                id=str(uuid4()),
-                course_id=cid,
-                prerequisite_id=pid,
-            ) for (cid, pid) in pairs
-        ]
-
-        BATCH = 1000
-        for i in range(0, len(entities), BATCH):
-            await self.course_prereq_repo.save_many(entities[i:i+BATCH])
+        for course_id, prereq_id in pairs:
+            await self.create_prereq_use_case.execute(course_id, prereq_id)
