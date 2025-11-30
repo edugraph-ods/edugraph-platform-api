@@ -44,6 +44,19 @@ class CoursePrerequisiteRepositoryImpl(CoursePrerequisiteRepository, BaseReposit
         return result.scalar()
 
     async def find_by_course_and_prerequisite(self, course_id: str, prerequisite_id: str) -> CoursePrerequisite | None:
+        query = (
+            select(CoursePrerequisiteModel)
+            .where(
+                CoursePrerequisiteModel.course_id == course_id,
+                CoursePrerequisiteModel.prerequisite_id == prerequisite_id,
+            )
+            .limit(1)
+        )
+        result = await self.session.execute(query)
+        model = result.scalars().first()
+        return self._to_domain(model) if model else None
+
+    async def find_by_course_and_prerequisite(self, course_id: str, prerequisite_id: str) -> CoursePrerequisite | None:
         query = select(CoursePrerequisiteModel).where(CoursePrerequisiteModel.course_id == course_id).where(CoursePrerequisiteModel.prerequisite_id == prerequisite_id)
         result = await self.session.execute(query)
         model = result.scalar_one_or_none()

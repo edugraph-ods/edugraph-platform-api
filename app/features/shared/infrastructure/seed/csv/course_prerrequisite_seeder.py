@@ -31,6 +31,16 @@ class CoursePrerequisiteSeeder:
             uni_name, _ = UniversityCSVLoader.parse(str(uni_raw))
             by_uni_career_code[(uni_name, career_name, str(code).strip())] = str(cid)
 
+        existing_pairs: set[tuple[str, str]] = set()
+        existing = await self.session.execute(text(
+            """
+            SELECT course_id, prerequisite_id
+            FROM course_prerequisites
+            """
+        ))
+        for cid, pid in existing.fetchall():
+            existing_pairs.add((str(cid), str(pid)))
+
         pairs = set()
         for row in rows:
             uni_raw = row.get("Universidad ", "").strip()
@@ -51,7 +61,9 @@ class CoursePrerequisiteSeeder:
                 prereq_course_id = by_uni_career_code.get((uni_name, career_name, p_code))
                 if not prereq_course_id or prereq_course_id == course_id:
                     continue
-                pairs.add((course_id, prereq_course_id))
+                pair = (course_id, prereq_course_id)
+                if pair not in existing_pairs:
+                    pairs.add(pair)
 
         for course_id, prereq_id in pairs:
             await self.create_prereq_use_case.execute(course_id, prereq_id)

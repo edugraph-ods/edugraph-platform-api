@@ -93,6 +93,12 @@ async def lifespan(app: FastAPI):
             )
         except Exception:
             pass
+        try:
+            await conn.exec_driver_sql(
+                "ALTER TABLE course_prerequisites ADD CONSTRAINT uq_course_prereq UNIQUE (course_id, prerequisite_id)"
+            )
+        except Exception:
+            pass
 
     # Seeder
     async with async_session_maker() as session:

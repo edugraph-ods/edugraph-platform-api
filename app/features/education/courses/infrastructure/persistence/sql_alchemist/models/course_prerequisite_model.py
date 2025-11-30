@@ -1,4 +1,4 @@
-﻿from sqlalchemy import Column, String, ForeignKey
+﻿from sqlalchemy import Column, String, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 
 from app.features.shared.infrastructure.persistence.sql_alchemist.base.base import Base
@@ -13,3 +13,6 @@ class CoursePrerequisiteModel(Base):
 
     course = relationship("CourseModel", foreign_keys=[course_id], back_populates="prerequisites")
     prerequisite = relationship("CourseModel", foreign_keys=[prerequisite_id])
+    __table_args__ = (
+        UniqueConstraint("course_id", "prerequisite_id", name="uq_course_prereq"),
+    )
