@@ -6,7 +6,7 @@ class GetAllCoursesByCareerIdUseCase:
         self.repository = repository
 
     async def execute(self, career_id: str):
-        courses = await self.repository.find_by_career_id(career_id)
+        courses = await self.repository.find_by_career(career_id)
 
         if not courses:
             return {
