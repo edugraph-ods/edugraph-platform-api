@@ -22,7 +22,8 @@ class MinPrereqPathUseCase:
 
             prereqs = course.prerequisites
             if isinstance(prereqs, list):
-                prereqs = Prerequisites(prereqs)
+                normalized = [p.id if hasattr(p, 'id') else p for p in prereqs]
+                prereqs = Prerequisites(normalized)
 
             for prereq_id in prereqs.course_ids:
                 if prereq_id in index_map:
@@ -54,7 +55,8 @@ class MinPrereqPathUseCase:
         for i, c in enumerate(courses):
             prereqs = c.prerequisites
             if isinstance(prereqs, list):
-                prereqs = Prerequisites(prereqs)
+                normalized = [p.id if hasattr(p, 'id') else p for p in prereqs]
+                prereqs = Prerequisites(normalized)
 
             if not prereqs.course_ids:
                 path = reconstruct_path(i, target_idx)
@@ -74,4 +76,3 @@ class MinPrereqPathUseCase:
                 for c in min_path
             ]
         )
-
