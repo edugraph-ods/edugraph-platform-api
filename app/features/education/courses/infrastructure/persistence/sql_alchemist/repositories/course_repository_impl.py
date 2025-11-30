@@ -92,6 +92,29 @@ class CourseRepositoryImpl(CourseRepository, BaseRepository):
         courses = []
         for model in models:
             course = self._to_domain(model)
+            course.prerequisites = [p.prerequisite.id for p in getattr(model, "prerequisites", []) if p.prerequisite]
+            courses.append(course)
+
+        return courses
+
+    async def find_by_career(self, career_id: str) -> list[Course]:
+        query = (
+            select(CourseModel)
+            .where(CourseModel.career_id == career_id)
+            .join(CourseModel.career)
+            .options(
+                selectinload(CourseModel.prerequisites)
+                .selectinload(CoursePrerequisiteModel.prerequisite)
+            )
+            .order_by(CourseModel.cycle, CourseModel.code)
+        )
+
+        result = await self.session.execute(query)
+        models = result.scalars().unique().all()
+
+        courses = []
+        for model in models:
+            course = self._to_domain(model)
             course.prerequisites = [self._to_domain(p.prerequisite) for p in getattr(model, "prerequisites", []) if
                                     p.prerequisite]
             courses.append(course)
@@ -131,3 +154,4 @@ class CourseRepositoryImpl(CourseRepository, BaseRepository):
         result = await self.session.execute(query)
         model = result.scalar_one_or_none()
         return self._to_domain(model) if model else None
+
