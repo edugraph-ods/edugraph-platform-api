@@ -31,3 +31,6 @@ class CourseRepository(ABC):
     @abstractmethod
     async def get_by_id(self, course_id: str) -> Course | None:
         pass
+
+    async def get_all_courses_with_prerequisites(self) -> list[Course]:
+        pass

@@ -1,4 +1,4 @@
-﻿from typing import Any, Coroutine
+﻿from typing import Any
 
 from sqlalchemy import select, func
 from sqlalchemy.orm import selectinload
@@ -154,4 +154,27 @@ class CourseRepositoryImpl(CourseRepository, BaseRepository):
         result = await self.session.execute(query)
         model = result.scalar_one_or_none()
         return self._to_domain(model) if model else None
+
+    async def get_all_courses_with_prerequisites(self) -> list[Course]:
+        query = (
+            select(CourseModel)
+            .options(
+                selectinload(CourseModel.prerequisites)
+                .selectinload(CoursePrerequisiteModel.prerequisite)
+            )
+            .order_by(CourseModel.cycle, CourseModel.code)
+        )
+
+        result = await self.session.execute(query)
+        models = result.scalars().unique().all()
+
+        courses = []
+        for model in models:
+            course = self._to_domain(model)
+            course.prerequisites = [
+                p.prerequisite.id for p in getattr(model, "prerequisites", []) if p.prerequisite
+            ]
+            courses.append(course)
+
+        return courses
 

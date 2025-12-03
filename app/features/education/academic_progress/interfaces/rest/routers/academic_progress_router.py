@@ -3,8 +3,14 @@ from fastapi.params import Depends
 
 from app.features.education.academic_progress.application.internal.inbound_services.use_cases.academic_progress_use_case import \
     AcademicProgressUseCase
+from app.features.education.academic_progress.application.internal.inbound_services.use_cases.get_personalized_route_use_case import \
+    GetPersonalizedRouteUseCase
 from app.features.education.academic_progress.interfaces.rest.schemas.academic_progress_requets import \
     AcademicProgressRequest
+from app.features.education.academic_progress.interfaces.rest.schemas.personalized_course_response import \
+    PersonalizedCourseResponse
+from app.features.education.academic_progress.interfaces.rest.schemas.personalized_rote_request import \
+    PersonalizedRouteRequest
 from app.features.education.courses.application.internal.inbound_services.use_cases.get_all_courses_by_career_id_use_case import \
     GetAllCoursesByCareerIdUseCase
 from app.features.education.academic_progress.domain.models.entities.academic_progress import CourseProgress
@@ -22,6 +28,12 @@ router = APIRouter(prefix="/api/v1/careers", tags=["Careers"])
 
 def get_course_repository(db=Depends(get_db)) -> CourseRepository:
     return CourseRepositoryImpl(db)
+
+def get_personalized_route_use_case(
+    repository: CourseRepository = Depends(get_course_repository),
+) -> GetPersonalizedRouteUseCase:
+    return GetPersonalizedRouteUseCase(repository)
+
 
 @router.post("/{career_id}/progress", response_model=AcademicProgressResponse)
 async def calculate_academic_progress(
@@ -70,3 +82,21 @@ async def calculate_academic_progress(
         months_needed_to_graduate=total_months,
         years_needed_to_graduate=years,
     )
+
+
+@router.post(
+    "/{career_id}/personalized-progress",
+    response_model=list[PersonalizedCourseResponse]
+)
+async def get_personalized_route(
+    career_id: str,
+    request: PersonalizedRouteRequest,
+    use_case: GetPersonalizedRouteUseCase = Depends(get_personalized_route_use_case)
+):
+    result = await use_case.execute(
+        career_id=career_id,
+        approved=request.approved_courses
+    )
+    return result
+
+
